@@ -6,17 +6,10 @@ import { Component } from '@angular/core';
   })
 export class Post{
 
-    _text: string;
+    text: string;
 
     constructor(text:string){
-        this._text = text;
-    }
-    
-    public get text() {
-     return this._text;
+        this.text = text;
     }
 
-    public set text(text) {
-        this._text = text;
-    }
 }

@@ -1,18 +1,33 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Profile
+            <div *ngIf="searchInterests">
+                Interest Search
+            </div>
+            <div *ngIf="!searchInterests">{{name}}</div>
         </ion-title>
     </ion-navbar>
 </ion-header>
+
 <ion-content>
-    <div *ngIf="searchInterests">Search</div>
+    <div *ngIf="searchInterests">
+        <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
+        <ion-list>
+            <ion-item *ngFor="let inter of globalInterests  | search : searchTerm" (click)="goToInterest(inter)">
+                <div>{{inter}}</div>
+            </ion-item>
+        </ion-list>
+    </div>
+
     <div *ngIf="!searchInterests">
-    <h1>
-        {{_name}}
-    </h1>
-    <ion-item class="post-tem-list" *ngFor="let post of _forum ">
-        <div>{{post._text}}</div>
-    </ion-item>
-</div>
+        <ion-row class="main-page">
+            <ion-col col-2 >
+            </ion-col>
+            <ion-col col-8>
+                <div class="post-item-list" *ngFor="let post of forum ">
+                    <div class="post-text">{{post.text}}</div>
+                </div>
+            </ion-col>
+            </ion-row>
+    </div>
 </ion-content>

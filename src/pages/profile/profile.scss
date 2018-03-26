@@ -5,7 +5,10 @@ page-profile {
     background-color:#87e4f5;
 }
 
-
+.interest-scrollbar{
+    height:88%;
+    width:100%;
+}
 .avatar-image{
     width:90% !important;  
     height : 90% !important;  
@@ -26,12 +29,8 @@ border: 3px solid #1bb7d3;
 border-radius: 5px;
 }
 
-.interest-name-list{
-    color:#c46336;   
-}
 
 .interest-name-item{
-    color:#22634a; 
     background-color:#54bcce;      
 }
 

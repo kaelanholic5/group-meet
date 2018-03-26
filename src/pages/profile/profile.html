@@ -25,23 +25,23 @@
     <ion-row class="main-page">
       <ion-col col-3 class="interest-name-list-col">
         <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
-        <ion-list class="interest-name-list">
-          <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)" >
-            <div>{{inter}}</div>
-          </ion-item>
-        </ion-list>
+       <div *ngIf="!reorderList"><button ion-button (click)="reorderInterests()">{{reorderButton}}</button></div>
+        <div *ngIf="reorderList"> <button ion-button (click)="reorderInterests()">{{reorderButton}}</button> <button ion-button (click)="cancelReorder()">Cancel</button></div>
+        <ion-scroll scrollY="true" class="interest-scrollbar">
+          <ion-list reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)">
+            <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm " (click)="goToInterest(inter)">
+              <div>{{inter}}</div>
+            </ion-item>
+          </ion-list>
+        </ion-scroll>
       </ion-col>
       <ion-col col-x class="center-page-col">
         <h1>Group Activity</h1>
         <ion-list></ion-list>
         <h1>Upcoming Events</h1>
         <ion-list></ion-list>
-
       </ion-col>
     </ion-row>
-
-
-
   </ion-grid>
 </ion-content>
 
