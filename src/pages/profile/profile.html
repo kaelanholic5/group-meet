@@ -11,8 +11,8 @@
   <ion-grid>
     <ion-row class="header-content">
       <ion-col col-3 class="avatar-col">
-        <ion-avatar class="avatar">
-          <img src="assets/imgs/logo.png" />
+        <ion-avatar>
+          <img class="avatar-image" src="assets/imgs/logo.png" />
         </ion-avatar>
       </ion-col>
       <ion-col col-6 class="name-col">
@@ -26,18 +26,18 @@
       <ion-col col-3 class="interest-name-list-col">
         <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
         <ion-list class="interest-name-list">
-          <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" >
-            <a href="#/Interest/{{inter._name}}"><div>{{inter._name}}</div></a>
+          <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)" >
+            <div>{{inter}}</div>
           </ion-item>
         </ion-list>
       </ion-col>
       <ion-col col-x class="center-page-col">
         <h1>Group Activity</h1>
+        <ion-list></ion-list>
         <h1>Upcoming Events</h1>
+        <ion-list></ion-list>
 
       </ion-col>
-
-
     </ion-row>
 
 

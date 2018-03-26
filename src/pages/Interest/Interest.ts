@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Post } from '../Posts/Post';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 @Component({
     selector: 'page-Interest',
@@ -7,25 +8,25 @@ import { Post } from '../Posts/Post';
   })
 
 export class Interest {
-    private _name: string;
-    private _parent: Interest;
-    private _children: Array<Interest>;
-    private _forum: Array<Post>;
-    private _icon: ImageBitmap;
+    _name: string;
+    _parent: Interest;
+    _children: Array<Interest>;
+    _forum: Array<Post>;
+    _icon: ImageBitmap;
+    searchInterests: boolean;
 
-    constructor(name:string, parent: Interest, children: Array<Interest>, forum: Array<Post>){
-        this._name = name;
-        this._parent = parent;
-        if(children == null){
-            this._children = [];
-        }else{
-            this._children =  children;
+    constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events){
+        this._name = navParams.get('name');      
+        if(this._name == null){
+            this.searchInterests = true;
+        }  
+        else{
+            this.searchInterests = false;
         }
-        if(forum == null){
-            this.initializeForum();
-        }else{
-            this._forum =  forum;
-        }
+        this._children = [];     
+        this._forum = [];  
+        let initialPost = new Post("Welcome to "+this._name+"! This is the fist post ever.");
+        this.addPost(initialPost);
     }
 
     public get name() {
@@ -68,7 +69,5 @@ export class Interest {
         this._forum.push(post);
     }
 
-    initializeForum(){
-       let initialPost = new Post("Welcome to "+this._name+"! This is the fist post ever.");
-   }
+    
 }

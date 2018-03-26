@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,NavParams, Events  } from 'ionic-angular';
 import { Interest } from '../Interest/Interest';
 import { Post } from '../Posts/Post';
 import { FormControl } from '@angular/forms';
-
 import { RestProvider } from '../../providers/rest/rest';
 
 
@@ -12,26 +11,14 @@ import { RestProvider } from '../../providers/rest/rest';
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
-  interests: Array<Interest>;
+  interests: Array<string>;
   errorMessage: string;
   descending: boolean = false;
   order: number;
   column: string = 'name';
-
-  constructor(public navCtrl: NavController) {
-    
-    let postArr: Array<Post>;
-    let post1 = new Post("first post ever");
-    let post2 = new Post("second post ever");
-
-    postArr = [post1]
-    let postArr2 = [post1,post2];
-
-    //let image = new Image("");
-    let interBase = new Interest("base", null, null, postArr);
-    let interBase2 = new Interest("second", interBase, null, postArr2); 
-    
-    interBase.addChild(interBase2);
+  constructor(public navCtrl: NavController, public events: Events) {
+    let interBase = "base"
+    let interBase2 = "second" 
 
     this.interests = [interBase, interBase2];
   }
@@ -41,10 +28,10 @@ export class ProfilePage {
     this.order = this.descending ? 1 : -1;
   }
 
-  pushPage(inter){
-    this.navCtrl.push(inter);
+  goToInterest(inter: string)
+  {
+    this.navCtrl.push(Interest, {name: inter});
   }
-
 }
 
 

@@ -41,7 +41,8 @@ import { SortPipe } from '../pipes/sort/sort';
     AboutPage,
     ProfilePage,
     HomePage,
-    TabsPage
+    TabsPage,
+    Interest
   ],
   providers: [
     StatusBar,

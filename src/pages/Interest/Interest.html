@@ -1,6 +1,18 @@
-<h1>
-    {{_name}}
-</h1>
-<ion-item class="interest-name-item" *ngFor="let post of inter._forum ">
-        <div>{{post.text}}</div>
-</ion-item>
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Profile
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div *ngIf="searchInterests">Search</div>
+    <div *ngIf="!searchInterests">
+    <h1>
+        {{_name}}
+    </h1>
+    <ion-item class="post-tem-list" *ngFor="let post of _forum ">
+        <div>{{post._text}}</div>
+    </ion-item>
+</div>
+</ion-content>
