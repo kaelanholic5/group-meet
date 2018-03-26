@@ -5,7 +5,9 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { ProfilePage } from '../pages/profile/profile';
+import { Interest} from '../pages/Interest/Interest';
+import { Post } from '../pages/Posts/Post';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -13,13 +15,20 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { RestProvider } from '../providers/rest/rest';
 
+import { SearchPipe } from '../pipes/search/search';
+import { SortPipe } from '../pipes/sort/sort';
+
 @NgModule({
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
+    ProfilePage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SearchPipe,
+    SortPipe,
+    Interest,
+    Post
   ],
   imports: [
     BrowserModule,
@@ -30,7 +39,7 @@ import { RestProvider } from '../providers/rest/rest';
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
+    ProfilePage,
     HomePage,
     TabsPage
   ],
@@ -41,4 +50,7 @@ import { RestProvider } from '../providers/rest/rest';
     RestProvider
   ]
 })
+
+
+
 export class AppModule {}
