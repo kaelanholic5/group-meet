@@ -4,16 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
-import * as firebase from 'firebase';
-
-const config = {
-  apiKey: "AIzaSyDWjx0pNw1BBJr1_qleUKO82KfnW18iBV8",
-  authDomain: "eventconnector-adfe5.firebaseapp.com",
-  databaseURL: "https://eventconnector-adfe5.firebaseio.com",
-  projectId: "eventconnector-adfe5",
-  storageBucket: "eventconnector-adfe5.appspot.com",
-  messagingSenderId: "367579159576"
-};
 
 @Component({
   templateUrl: 'app.html'
@@ -28,6 +18,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
-    firebase.initializeApp(config);
+
   }
 }

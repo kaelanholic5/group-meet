@@ -1,11 +1,15 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      About
+      Sign In
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+    <ion-input placeholder="Enter your email" [(ngModel)]="username"></ion-input>
+    <ion-input placeholder="Enter your password" [(ngModel)]="password"></ion-input>
 
-</ion-content>
+    <button ion-button (click)="login(); username=''; password='';">Login</button>
+
+  </ion-content>
