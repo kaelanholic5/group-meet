@@ -1,0 +1,20 @@
+<ion-header>
+<ion-navbar>
+    <ion-title>Events</ion-title>
+</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<ion-list>
+    <ion-item *ngFor="let e of events">
+            <h1 style="float: left">{{e.payload.val().name}} 
+                <span style="font-size: 0.75em">Date: {{e.payload.val().createDTM | date:'yyyy-MM-dd'}}</span></h1>
+        <button ion-button style="float: right" (click)="deleteEvent(e.key)">Delete</button>
+    </ion-item>
+</ion-list>
+<button ion-button (click)="createNewEvent(newEventName); newEventName = '';">
+  Create new event
+</button>
+<ion-input placeholder="Enter event name" [(ngModel)]="newEventName"></ion-input>
+</ion-content>
+      

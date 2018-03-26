@@ -5,7 +5,9 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { ProfilePage } from '../pages/profile/profile';
+import { Interest} from '../pages/Interest/Interest';
+import { Post } from '../pages/Posts/Post';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { EventsPage } from '../pages/events/events';
@@ -26,14 +28,21 @@ const config = {
   messagingSenderId: "367579159576"
 };
 
+import { SearchPipe } from '../pipes/search/search';
+import { SortPipe } from '../pipes/sort/sort';
+
 @NgModule({
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
+    ProfilePage,
     HomePage,
     TabsPage,
     EventsPage
+    SearchPipe,
+    SortPipe,
+    Interest,
+    Post
   ],
   imports: [
     BrowserModule,
@@ -47,10 +56,11 @@ const config = {
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
+    ProfilePage,
     HomePage,
     TabsPage,
     EventsPage
+    Interest
   ],
   providers: [
     StatusBar,
@@ -60,4 +70,7 @@ const config = {
     AngularFireAuthProvider
   ]
 })
+
+
+
 export class AppModule {}
