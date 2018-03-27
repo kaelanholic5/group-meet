@@ -38,7 +38,7 @@ import { SortPipe } from '../pipes/sort/sort';
     ProfilePage,
     HomePage,
     TabsPage,
-    EventsPage
+    EventsPage,
     SearchPipe,
     SortPipe,
     Interest,
@@ -59,7 +59,7 @@ import { SortPipe } from '../pipes/sort/sort';
     ProfilePage,
     HomePage,
     TabsPage,
-    EventsPage
+    EventsPage,
     Interest
   ],
   providers: [

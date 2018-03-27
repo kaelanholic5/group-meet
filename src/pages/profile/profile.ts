@@ -3,7 +3,6 @@ import { NavController,NavParams, Events  } from 'ionic-angular';
 import { Interest } from '../Interest/Interest';
 import { Post } from '../Posts/Post';
 import { FormControl } from '@angular/forms';
-import { RestProvider } from '../../providers/rest/rest';
 
 
 @Component({
