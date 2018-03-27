@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController,NavParams, Events  } from 'ionic-angular';
-import { Interest } from '../Interest/Interest';
+import { InterestPage } from '../Interest/Interest';
 import { Post } from '../Posts/Post';
 import { FormControl } from '@angular/forms';
-import { RestProvider } from '../../providers/rest/rest';
 
 
 @Component({
@@ -19,14 +18,14 @@ export class ProfilePage {
   savedInterestOrder: Array<string>;
   constructor(public navCtrl: NavController, public events: Events) {
     let interBase = "base";
-    let interBase2 = "second"; 
+    let interBase2 = "second";
     this.reorderButton = "Reorder Interests";
     this.reorderList = false;
     this.interests = [interBase, interBase2, "1","2","g","h","j"];
   }
   goToInterest(inter: string)
   {
-    this.navCtrl.push(Interest, {name: inter});
+    this.navCtrl.push(InterestPage, {name: inter});
   }
 
   reorderItems(indexes) {
