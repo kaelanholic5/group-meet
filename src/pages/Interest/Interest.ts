@@ -11,26 +11,32 @@ import {InterestGroupServiceProvider} from "../../providers/interestGroupService
 export class InterestPage {
     interestName: string;
     interestGroup: any;
+    groupId: string;
 
     parent: InterestPage;
     children: Array<InterestPage>;
-    forum: Array<Post>;
+    forum: any[];
     icon: ImageBitmap;
     globalInterests: Array<string>;
 
     constructor(public navCtrl: NavController, public navParams: NavParams,
                 public interestGroupService: InterestGroupServiceProvider) {
       console.log("initializing");
-        let groupId = navParams.get('groupId');
-        interestGroupService.getGroup(groupId).subscribe(g => {
-          this.interestGroup = g;
-          this.interestName = g.group;
+        this.groupId = navParams.get('groupId');
+        interestGroupService.getGroup(this.groupId).subscribe(g => {
+          this.interestName = g.payload.val().group;
+         // this.forum = g.payload.val().posts;
+         // console.log(this.forum);
         });
+        this.interestGroupService.getPosts(this.groupId).subscribe(p => {
+            this.forum = p;
+            console.log(p);
+          });
 
     }
 
     addPost(newPostName: string) {
-      this.interestGroupService.createNewPost(newPostName, this.interestGroup.key);
+      this.interestGroupService.createNewPost(newPostName, this.groupId);
     }
 
     goToInterest(inter: string) {

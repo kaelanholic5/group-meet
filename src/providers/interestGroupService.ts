@@ -28,7 +28,7 @@ export class InterestGroupServiceProvider {
   }
 
   getGroup(groupId: string): Observable<any> {
-    let fireList = this.database.list('groups/' + groupId);
+    let fireList = this.database.object('groups/' + groupId);
 
     return fireList.snapshotChanges();
   }
@@ -41,6 +41,11 @@ export class InterestGroupServiceProvider {
     }
   }
 
+  getPosts(groupId: string): Observable<any> {
+    let fireList = this.database.list("groups/" + groupId + "/posts");
+
+    return fireList.snapshotChanges();
+  }
 
   getMyGroups() {
     if (this.loginService.user.value === null) {
@@ -80,8 +85,7 @@ export class InterestGroupServiceProvider {
                 this.database.object('userGroups/' + s.key + '/' + x.key).remove();
               }
             });
-          }
-        );
+          });
       }
     );
   }
