@@ -6,7 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AboutPage } from '../pages/about/about';
 import { ProfilePage } from '../pages/profile/profile';
-import { Interest} from '../pages/Interest/Interest';
+import { InterestPage } from '../pages/Interest/Interest';
+import { SearchPage } from '../pages/search/search';
 import { Post } from '../pages/Posts/Post';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -30,6 +31,7 @@ const config = {
 
 import { SearchPipe } from '../pipes/search/search';
 import { SortPipe } from '../pipes/sort/sort';
+import {InterestGroupServiceProvider} from "../providers/interestGroupService";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { SortPipe } from '../pipes/sort/sort';
     EventsPage,
     SearchPipe,
     SortPipe,
-    Interest,
+    InterestPage,
+    SearchPage,
     Post
   ],
   imports: [
@@ -60,14 +63,16 @@ import { SortPipe } from '../pipes/sort/sort';
     HomePage,
     TabsPage,
     EventsPage,
-    Interest
+    SearchPage,
+    InterestPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginServiceProvider,
-    AngularFireAuthProvider
+    AngularFireAuthProvider,
+    InterestGroupServiceProvider
   ]
 })
 

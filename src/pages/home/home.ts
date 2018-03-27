@@ -5,13 +5,15 @@ import { Observable } from 'rxjs/Observable';
 import { EventsPage } from '../events/events';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, 
-  AngularFireList, AngularFireObject } from 'angularfire2/database';
+import {
+  AngularFireDatabaseModule, AngularFireDatabase,
+  AngularFireList, AngularFireObject
+} from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
 interface event {
-    date: string;
-    time: string;
+  date: string;
+  time: string;
 }
 @Component({
   selector: 'page-home',
@@ -26,13 +28,13 @@ export class HomePage {
   userId: string;
 
   constructor(public navCtrl: NavController,
-              public af: AngularFireDatabase,
-              public navParams: NavParams,
-              public loginService: LoginServiceProvider) {
+    public af: AngularFireDatabase,
+    public navParams: NavParams,
+    public loginService: LoginServiceProvider) {
     this.database = af;
     this.getGroups();
     //this.groups.forEach(g => 
-     // this.getEvents(g));
+    // this.getEvents(g));
   }
 
   getMyGroups() {
@@ -72,7 +74,7 @@ export class HomePage {
     if (newGroupName != undefined) {
       let fireList = this.database.list('groups/');
       let newMod = fireList.push(newGroupName);
-      newMod.set({group: newGroupName, events: ''});
+      newMod.set({ group: newGroupName, events: '' });
     }
   }
 
@@ -85,10 +87,10 @@ export class HomePage {
     fireList.snapshotChanges().subscribe(
       snapshots => {
         snapshots.forEach(s => {
-           s.payload.forEach(x => {
-              if (x.val().groupKey === groupKey.key) {
-                this.database.object('userGroups/' + s.key + '/' + x.key).remove();
-              }
+          s.payload.forEach(x => {
+            if (x.val().groupKey === groupKey.key) {
+              this.database.object('userGroups/' + s.key + '/' + x.key).remove();
+            }
           });
         }
         );
@@ -97,7 +99,7 @@ export class HomePage {
   }
 
   public createUserGroup(groupKey: any) {
-    if (this.loginService.user.value === null) { 
+    if (this.loginService.user.value === null) {
       console.log("not authenticated - cant add group");
       return;
     }
@@ -109,7 +111,7 @@ export class HomePage {
       let fireList = this.database.list('userGroups/' + this.loginService.user);
       let newMod = fireList.push(groupKey.key);
       newMod.set({
-        groupKey: groupKey.key, 
+        groupKey: groupKey.key,
         groupName: groupKey.payload.val().group
       });
     }
