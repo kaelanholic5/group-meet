@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, 
+import { AngularFireDatabaseModule, AngularFireDatabase,
   AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
+
+import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
 
 @Component({
   selector: 'page-events',
@@ -16,37 +19,98 @@ export class EventsPage {
     database: AngularFireDatabase;
     events: any[];
     groupId: string;
+    search: FormControl;
+    pins: pin[];
+    searchControl: FormControl;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-                public af: AngularFireDatabase) {
+    latitude: number;
+    longitude: number;
+
+    errorMessage: string;
+    results: any[];
+
+  @ViewChild("search")
+  public searchElementRef: ElementRef;
+
+  constructor(private navCtrl: NavController, private navParams: NavParams,
+              private af: AngularFireDatabase, private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
         this.database = af;
-        this.groupId = navParams.get("groupId");
-        console.log(this.groupId);
-        this.getEvents();
+        this.pins = [];
   }
 
-  getEvents() {
-    let fireList = this.database.list("groups/" + this.groupId + "/events");
+  ngOnInit() {
+    this.latitude = 38.9072;
+    this.longitude = -77.0369;
+    this.zoom = 5;
 
-    fireList.snapshotChanges().subscribe(s => {
-     // s.forEach(x => this.groups.push(x.key.toString()));
-      this.events = s;
-     // s.forEach(x => this.groups.push(x));
+    this.searchControl = new FormControl();
+
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        types: ["address"]
+      });
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          console.log("found new place " + place.name);
+
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          this.dropPin(place);
+        });
+      });
     });
   }
 
-  public createNewEvent(newEventName: string) {
-    console.log("create " + newEventName);
-    if (newEventName != undefined) {
-      let fireList = this.database.list("groups/" +this.groupId + '/events/');
-      let newMod = fireList.push(newEventName);
-      newMod.set({name: newEventName, createDTM: Date.now()});
-    }
+  public findLocation(location: string) {
+
+
+    let googleMap = new google.maps.Map(document.getElementById('map'),
+      { zoom: 15
+      });
+    let service = new google.maps.places.PlacesService(googleMap);
+
+    service.textSearch({
+      location: new google.maps.LatLng(38.9072, -77.0369),
+      radius: 100,
+      query: location
+    }, (results, status) => {
+      if (status != google.maps.places.PlacesServiceStatus.OK) {
+        this.errorMessage = status.toString();
+      } else {
+        results.forEach(result => {
+          console.log("Found results!");
+          console.log(result);
+        //  this.dropPin(result, googleMap);
+        })
+      }
+    });
   }
 
-  public deleteEvent(eventKey: any) {
-    let fireList = this.database.list("groups/" + this.groupId + "/events/" + eventKey);
-    fireList.remove();
+  dropPin(result, map) {
+    this.latitude = result.geometry.location.lat();
+    this.longitude = result.geometry.location.lng();
+    this.zoom = 12;
+
+    this.pins.push({
+      latitude: this.latitude,
+      longitude: this.longitude,
+      name: result.name
+    });
   }
 
+  markerClick(pin: pin) {
+    //do something?
+    console.log(pin.name + " was clicked!");
+  }
+}
+
+interface pin {
+  latitude: number;
+  longitude: number;
+  name: string;
 }

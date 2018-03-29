@@ -11,16 +11,17 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class LoginServiceProvider {
-  
+
     user: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(public ang: AngularFireAuth) {
     }
-  
-  
+
+
     public login() {
       this.ang.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(res => { this.user = res.user.uid; console.log(res.user)});
+      .then(res => { this.user = res.user.uid; console.log(res.user)})
+        .catch(error => console.log(error));
     }
 
 }

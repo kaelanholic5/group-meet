@@ -77,7 +77,7 @@ export class InterestGroupServiceProvider {
 
     //delete user group references
     fireList = this.database.list('userGroups');
-    fireList.snapshotChanges().subscribe(
+    /*fireList.snapshotChanges().subscribe(
       snapshots => {
         snapshots.forEach(s => {
             s.payload.forEach(x => {
@@ -87,7 +87,7 @@ export class InterestGroupServiceProvider {
             });
           });
       }
-    );
+    );*/
   }
 
   createUserGroup(groupKey: any) {
@@ -115,16 +115,16 @@ export class InterestGroupServiceProvider {
     return fireList.snapshotChanges();
   }
 
-  public createNewEvent(newEventName: string, groupId: string) {
+  createNewEvent(newEventName: string, newEventLocation: string, groupId: string) {
     console.log("create " + newEventName);
     if (newEventName != undefined) {
       let fireList = this.database.list("groups/" + groupId + '/events/');
       let newMod = fireList.push(newEventName);
-      newMod.set({name: newEventName, createDTM: Date.now()});
+      newMod.set({name: newEventName, location: newEventLocation, createDTM: Date.now()});
     }
   }
 
-  public deleteEvent(eventKey: any, groupId: string) {
+  deleteEvent(eventKey: any, groupId: string) {
     let fireList = this.database.list("groups/" + groupId + "/events/" + eventKey);
     fireList.remove();
   }

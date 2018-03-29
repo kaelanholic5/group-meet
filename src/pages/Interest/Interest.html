@@ -9,11 +9,23 @@
         <ion-col col-2 >
         </ion-col>
         <ion-list col-8>
-            <ion-item class="post-item-list" *ngFor="let post of forum">
+            <ion-list-header>Posts</ion-list-header>
+            <ion-item class="post-item-list" *ngFor="let post of posts">
                 <div>{{post.payload.val().name}}</div>
             </ion-item>
           <button ion-button (click)="addPost(newPostName); newPostName='';">Create Post</button>
           <ion-input placeholder="Enter Post Name" [(ngModel)]="newPostName"></ion-input>
+
+          <ion-list-header>Events</ion-list-header>
+          <ion-item class="post-item-list" *ngFor="let event of events">
+            <div>{{event.payload.val().name}}</div>
+            <div style="float: left">{{event.payload.val().location}}</div>
+          </ion-item>
+          <button ion-button (click)="errorMessage=''; addEvent(newEventName, newEventLocation);
+          newEventName=''; newEventLocation='';">Create Event</button>
+          <ion-input placeholder="Enter Event Name" [(ngModel)]="newEventName"></ion-input>
+          <ion-input placeholder="Enter Event Location" [(ngModel)]="newEventLocation"></ion-input>
+          <ion-label>{{errorMessage}}</ion-label>
         </ion-list>
         </ion-row>
 </ion-content>

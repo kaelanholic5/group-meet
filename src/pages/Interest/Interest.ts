@@ -12,10 +12,12 @@ export class InterestPage {
     interestName: string;
     interestGroup: any;
     groupId: string;
+    errorMessage: string = '';
 
     parent: InterestPage;
     children: Array<InterestPage>;
-    forum: any[];
+  posts: any[];
+  events: any[];
     icon: ImageBitmap;
     globalInterests: Array<string>;
 
@@ -25,13 +27,13 @@ export class InterestPage {
         this.groupId = navParams.get('groupId');
         interestGroupService.getGroup(this.groupId).subscribe(g => {
           this.interestName = g.payload.val().group;
-         // this.forum = g.payload.val().posts;
-         // console.log(this.forum);
         });
         this.interestGroupService.getPosts(this.groupId).subscribe(p => {
-            this.forum = p;
-            console.log(p);
-          });
+            this.posts = p;
+        });
+      this.interestGroupService.getEvents(this.groupId).subscribe(e => {
+        this.events = e;
+      });
 
     }
 
@@ -39,7 +41,13 @@ export class InterestPage {
       this.interestGroupService.createNewPost(newPostName, this.groupId);
     }
 
-    goToInterest(inter: string) {
-        this.navCtrl.push(InterestPage, { name: inter });
+    addEvent(newEventName: string, newEventLocation: string) {
+      if (!newEventName || !newEventLocation) {
+        this.errorMessage = 'Please enter a name and location for the event';
+        return;
+      }
+
+      this.interestGroupService.createNewEvent(newEventName, newEventLocation, this.groupId);
     }
+
 }
