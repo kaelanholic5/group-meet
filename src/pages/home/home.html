@@ -4,8 +4,59 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <button ion-button (click)="login()">
-    Login
-  </button>
+<ion-content class="body">
+  <div *ngIf="loginService.user == null">
+    <button ion-button (click)="login()">
+      Login
+    </button>
+  </div>
+
+  <div *ngIf="loginService.user != null">
+    <ion-grid>
+      <ion-row class="header-content">
+        <ion-col col-3 class="avatar-col">
+          <ion-avatar>
+            <img class="avatar-image" src="assets/imgs/logo.png" />
+          </ion-avatar>
+        </ion-col>
+        <ion-col col-6 class="name-col">
+          <div class="name-header">
+            First MI Last
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="main-page">
+        <ion-col col-3 class="interest-name-list-col">
+          <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
+          <div *ngIf="!reorderList">
+            <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
+          </div>
+          <div *ngIf="reorderList">
+            <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
+            <button ion-button (click)="cancelReorder()">Cancel</button>
+          </div>
+          <ion-scroll scrollY="true" class="interest-scrollbar">
+            <ion-list reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)">
+              <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm " (click)="goToInterest(inter)">
+                <div>{{inter.payload.val().groupName}}</div>
+              </ion-item>
+            </ion-list>
+          </ion-scroll>
+        </ion-col>
+        <ion-col col-x class="center-page-col">
+          <h1>Group Activity</h1>
+          <ion-scroll scrollY="true" class="interest-scrollbar">
+              <ion-list >
+                <ion-item class="interest-name-item" *ngFor="let post of postsList">
+                  <div>{{post}}</div>
+                </ion-item>
+              </ion-list>
+            </ion-scroll>
+          <h1>Upcoming Events</h1>
+          <ion-list></ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

@@ -1,119 +1,81 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { App, NavController, NavParams, Events, Tabs } from 'ionic-angular';
+import { InterestPage } from '../Interest/Interest';
+import { Post } from '../Posts/Post';
+import { FormControl } from '@angular/forms';
+import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 import { LoginServiceProvider } from '../../providers/loginService';
-import { Observable } from 'rxjs/Observable';
-import { EventsPage } from '../events/events';
-
 import { AngularFireModule } from 'angularfire2';
-import {
-  AngularFireDatabaseModule, AngularFireDatabase,
-  AngularFireList, AngularFireObject
-} from 'angularfire2/database';
-import * as firebase from 'firebase/app';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
-interface event {
-  date: string;
-  time: string;
-}
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-
-  groups: any[];
-  myGroups: any[];
-  eventsForGroups: any[] = [];
-  database: AngularFireDatabase;
-  userId: string;
-
-  constructor(public navCtrl: NavController,
-    public af: AngularFireDatabase,
-    public navParams: NavParams,
-    public loginService: LoginServiceProvider) {
-    this.database = af;
-    this.getGroups();
-    //this.groups.forEach(g => 
-    // this.getEvents(g));
+  loggedIn: boolean;
+  interests: Array<any>;
+  errorMessage: string;
+  column: string = 'name';
+  reorderList: boolean;
+  reorderButton: string;
+  savedInterestOrder: Array<string>;
+  user: any;
+  loginSubscription: any;
+  postsList: any;
+  constructor(public navCtrl: NavController, public events: Events, public interestGroupService: InterestGroupServiceProvider, public loginService: LoginServiceProvider) {
+    this.reorderButton = "Reorder Interests";
   }
 
-  getMyGroups() {
-    if (this.loginService.user.value === null) {
-      console.log("not authenticated :(");
-      return;
-    } else {
-      console.log("you are authenticated! " + this.loginService.user);
-    }
-    let fireList = this.database.list('userGroups/' + this.loginService.user);
+  public login() {
+    this.loginSubscription = this.loginService.login().subscribe(data =>{
+      this.getGroupsAndPosts();
+    });
+  }
+ 
+  goToInterest(inter: any) {
+    console.log(inter);
+    this.navCtrl.push(InterestPage, { 'groupId': inter.key });
+  }
 
-    fireList.snapshotChanges().subscribe(s => {
-      this.myGroups = s;
-      s.forEach(groupId => console.log(groupId.payload.val().groupName));
+  reorderItems(indexes) {
+    let element = this.interests[indexes.from];
+    this.interests.splice(indexes.from, 1);
+    this.interests.splice(indexes.to, 0, element);
+  }
+
+  reorderInterests() {
+    if (this.reorderList) {
+      //save order
+      this.reorderList = false;
+      this.reorderButton = "Reorder Interests";
+    }
+    else {
+      this.savedInterestOrder = Object.assign([], this.interests);
+      this.reorderList = true;
+      this.reorderButton = "Save";
+    }
+  }
+
+  cancelReorder() {
+    this.interests = Object.assign([], this.savedInterestOrder);
+    this.reorderList = false;
+    this.reorderButton = "Reorder Interests";
+  }
+
+  getGroupsAndPosts() {
+    this.interestGroupService.getMyGroups(this.loginService.user).subscribe(g => {
+      this.interests = g;
+      this.interestGroupService.getMyGroupPosts(g).subscribe(p =>{
+        this.postsList = p;
+        console.log(this.postsList);
+      })
     });
   }
 
-  getGroups() {
-    let fireList = this.database.list('groups/');
 
-    console.log("getting groups");
-    fireList.snapshotChanges().subscribe(s => {
-      this.groups = s;
-    });
-  }
 
-  ionViewDidLoad() {
-  }
-
-  public getEvents(groupKey: any) {
-    //this.navCtrl.parent.select(1);
-    this.navCtrl.push(EventsPage, { 'groupId': groupKey.key });
-  }
-
-  public createNewGroup(newGroupName: string) {
-    console.log("create " + newGroupName);
-    if (newGroupName != undefined) {
-      let fireList = this.database.list('groups/');
-      let newMod = fireList.push(newGroupName);
-      newMod.set({ group: newGroupName, events: '' });
-    }
-  }
-
-  public deleteGroup(groupKey: any) {
-    let fireList = this.database.list('groups/' + groupKey.key);
-    fireList.remove();
-
-    //delete user group references
-    fireList = this.database.list('userGroups');
-    fireList.snapshotChanges().subscribe(
-      snapshots => {
-        snapshots.forEach(s => {
-          s.payload.forEach(x => {
-            if (x.val().groupKey === groupKey.key) {
-              this.database.object('userGroups/' + s.key + '/' + x.key).remove();
-            }
-          });
-        }
-        );
-      }
-    );
-  }
-
-  public createUserGroup(groupKey: any) {
-    if (this.loginService.user.value === null) {
-      console.log("not authenticated - cant add group");
-      return;
-    }
-
-    if (groupKey != undefined) {
-
-      // should check to see if it exists
-
-      let fireList = this.database.list('userGroups/' + this.loginService.user);
-      let newMod = fireList.push(groupKey.key);
-      newMod.set({
-        groupKey: groupKey.key,
-        groupName: groupKey.payload.val().group
-      });
-    }
-  }
 }
+
+

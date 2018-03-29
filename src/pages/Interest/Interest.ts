@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Post } from '../Posts/Post';
 import { NavController, NavParams, Events } from 'ionic-angular';
-import {InterestGroupServiceProvider} from "../../providers/interestGroupService";
+import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'page-Interest',
@@ -10,30 +11,32 @@ import {InterestGroupServiceProvider} from "../../providers/interestGroupService
 
 export class InterestPage {
     interestName: string;
-    interestGroup: any;
+    interestGroup: Array<any>;
 
     parent: InterestPage;
     children: Array<InterestPage>;
     forum: Array<Post>;
     icon: ImageBitmap;
     globalInterests: Array<string>;
+    groupId: string;
 
     constructor(public navCtrl: NavController, public navParams: NavParams,
-                public interestGroupService: InterestGroupServiceProvider) {
-      console.log("initializing");
-        let groupId = navParams.get('groupId');
-        interestGroupService.getGroup(groupId).subscribe(g => {
-          this.interestGroup = g;
-          this.interestName = g.group;
+        public interestGroupService: InterestGroupServiceProvider) {
+        console.log("initializing");
+        this.groupId = navParams.get('groupId');
+        console.log(this.groupId);
+        interestGroupService.getGroup(this.groupId).subscribe(g => {
+            this.interestGroup = g;
+            this.interestName = g.payload.val().group;
         });
 
     }
 
-    addPost(newPostName: string) {
-      this.interestGroupService.createNewPost(newPostName, this.interestGroup.key);
+    addPost(newPostName: string, newPostText: string) {
+        this.interestGroupService.createNewPost(newPostName, this.groupId, newPostText);
     }
 
-    goToInterest(inter: string) {
-        this.navCtrl.push(InterestPage, { name: inter });
+    goToInterest(inter: any) {
+        this.navCtrl.push(InterestPage, { 'groupId': inter.key });
     }
 }

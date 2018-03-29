@@ -21,10 +21,10 @@ export class SearchPage {
 
   constructor(public navCtrl: NavController,
               public af: AngularFireDatabase,
-              interestGroupService: InterestGroupServiceProvider) {
+              public interestGroupService: InterestGroupServiceProvider) {
     this.database = af;
     console.log("getting groups");
-    interestGroupService.getAllGroups().subscribe(s => {
+    this.interestGroupService.getAllGroups().subscribe(s => {
        this.interestGroups = s;
     });
   }
@@ -33,4 +33,8 @@ export class SearchPage {
     this.navCtrl.push(InterestPage, { 'groupId': groupKey.key });
   }
 
+  createUserGroup(group: any)
+  {
+    this.interestGroupService.createUserGroup(group);
+  }
 }

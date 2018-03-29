@@ -7,7 +7,6 @@
 </ion-header>
 
 <ion-content class="body">
-
   <ion-grid>
     <ion-row class="header-content">
       <ion-col col-3 class="avatar-col">
@@ -25,12 +24,17 @@
     <ion-row class="main-page">
       <ion-col col-3 class="interest-name-list-col">
         <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
-       <div *ngIf="!reorderList"><button ion-button (click)="reorderInterests()">{{reorderButton}}</button></div>
-        <div *ngIf="reorderList"> <button ion-button (click)="reorderInterests()">{{reorderButton}}</button> <button ion-button (click)="cancelReorder()">Cancel</button></div>
+        <div *ngIf="!reorderList">
+          <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
+        </div>
+        <div *ngIf="reorderList">
+          <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
+          <button ion-button (click)="cancelReorder()">Cancel</button>
+        </div>
         <ion-scroll scrollY="true" class="interest-scrollbar">
           <ion-list reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)">
             <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm " (click)="goToInterest(inter)">
-              <div>{{inter}}</div>
+              <div>{{inter.payload.val().groupName}}</div>
             </ion-item>
           </ion-list>
         </ion-scroll>

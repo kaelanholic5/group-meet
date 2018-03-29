@@ -7,13 +7,15 @@
 <ion-content>
     <ion-row class="main-page">
         <ion-col col-2 >
+                <button ion-button (click)="addPost(newPostName, newPostText); newPostName='';">Create Post</button>
+                <ion-input placeholder="Enter Post Name" [(ngModel)]="newPostName"></ion-input>
+                <ion-input placeholder="Enter Post Text" [(ngModel)]="newPostText"></ion-input>
         </ion-col>
         <ion-col col-8>
-         <!--   <div class="post-item-list" *ngFor="let post of forum">
+           <div class="post-item-list" *ngFor="let post of forum">
                 <div class="post-text">{{post.text}}</div>
-            </div> -->
+            </div> 
         </ion-col>
         </ion-row>
-    <button ion-button (click)="newPostName(newPostName); newPostName='';">Create Post</button>
-    <ion-label placeholder="Enter Post Name" [(ngModel)]="newPostName"></ion-label>
+    
 </ion-content>

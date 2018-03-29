@@ -8,8 +8,8 @@ import 'rxjs/add/operator/map';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import {AngularFireDatabase} from "angularfire2/database";
-import {LoginServiceProvider} from "./loginService";
+import { AngularFireDatabase } from "angularfire2/database";
+import { LoginServiceProvider } from "./loginService";
 
 @Injectable()
 export class InterestGroupServiceProvider {
@@ -17,7 +17,7 @@ export class InterestGroupServiceProvider {
   database: AngularFireDatabase;
 
   constructor(public af: AngularFireDatabase,
-              public loginService: LoginServiceProvider) {
+    public loginService: LoginServiceProvider) {
     this.database = af;
   }
 
@@ -28,33 +28,39 @@ export class InterestGroupServiceProvider {
   }
 
   getGroup(groupId: string): Observable<any> {
-    let fireList = this.database.list('groups/' + groupId);
-
+    let fireList = this.database.object('groups/' + groupId);
     return fireList.snapshotChanges();
   }
 
-  createNewPost(newPostName: string, groupId: string) {
-    if (newPostName != undefined) {
+  createNewPost(newPostName: string, groupId: string, newPostText) {
+    if (newPostName != undefined ) {
+      if(newPostText == undefined){
+        newPostText = "";
+      }
       let fireList = this.database.list("groups/" + groupId + '/posts/');
-      let newMod = fireList.push(newPostName);
-      newMod.set({name: newPostName, createDTM: Date.now()});
+      let newMod = fireList.push({ name: newPostName, createDTM: Date.now(), text: newPostText});
     }
   }
 
+  getMyGroupPosts(group:any){
+    let fireList = null;
+    group.forEach(s =>{
+      fireList = this.database.list('groups/' + s.key)
+    })
+    return fireList.snapshotChanges();
+  }
+  
 
-  getMyGroups() {
-    if (this.loginService.user.value === null) {
+  getMyGroups(user:any) {
+    if (user.value === null) {
       console.log("not authenticated :(");
       return;
     } else {
-      console.log("you are authenticated! " + this.loginService.user);
+      console.log("you are authenticated! " + user.uid);
     }
-    let fireList = this.database.list('userGroups/' + this.loginService.user);
+    let fireList = this.database.list('userGroups/' + user.uid);
 
-    fireList.snapshotChanges().subscribe(s => {
-      return s;
-      //s.forEach(groupId => console.log(groupId.payload.val().groupName));
-    });
+    return fireList.snapshotChanges();
   }
 
   createNewGroup(newGroupName: string) {
@@ -62,7 +68,7 @@ export class InterestGroupServiceProvider {
     if (newGroupName != undefined) {
       let fireList = this.database.list('groups/');
       let newMod = fireList.push(newGroupName);
-      newMod.set({group: newGroupName, events: ''});
+      newMod.set({ group: newGroupName, events: '' });
     }
   }
 
@@ -75,12 +81,12 @@ export class InterestGroupServiceProvider {
     fireList.snapshotChanges().subscribe(
       snapshots => {
         snapshots.forEach(s => {
-            s.payload.forEach(x => {
-              if (x.val().groupKey === groupKey.key) {
-                this.database.object('userGroups/' + s.key + '/' + x.key).remove();
-              }
-            });
-          }
+          s.payload.forEach(x => {
+            if (x.val().groupKey === groupKey.key) {
+              this.database.object('userGroups/' + s.key + '/' + x.key).remove();
+            }
+          });
+        }
         );
       }
     );
@@ -96,7 +102,7 @@ export class InterestGroupServiceProvider {
 
       // should check to see if it exists
 
-      let fireList = this.database.list('userGroups/' + this.loginService.user);
+      let fireList = this.database.list('userGroups/' + this.loginService.user.uid);
       let newMod = fireList.push(groupKey.key);
       newMod.set({
         groupKey: groupKey.key,
@@ -116,7 +122,7 @@ export class InterestGroupServiceProvider {
     if (newEventName != undefined) {
       let fireList = this.database.list("groups/" + groupId + '/events/');
       let newMod = fireList.push(newEventName);
-      newMod.set({name: newEventName, createDTM: Date.now()});
+      newMod.set({ name: newEventName, createDTM: Date.now() });
     }
   }
 
