@@ -63,7 +63,6 @@ export class ProfilePage {
     this.reorderButton = "Reorder Interests";
   }
 
-  
 }
 
 

@@ -39,39 +39,15 @@ export class HomePage {
     this.navCtrl.push(InterestPage, { 'groupId': inter.key });
   }
 
-  reorderItems(indexes) {
-    let element = this.interests[indexes.from];
-    this.interests.splice(indexes.from, 1);
-    this.interests.splice(indexes.to, 0, element);
-  }
-
-  reorderInterests() {
-    if (this.reorderList) {
-      //save order
-      this.reorderList = false;
-      this.reorderButton = "Reorder Interests";
-    }
-    else {
-      this.savedInterestOrder = Object.assign([], this.interests);
-      this.reorderList = true;
-      this.reorderButton = "Save";
-    }
-  }
-
-  cancelReorder() {
-    this.interests = Object.assign([], this.savedInterestOrder);
-    this.reorderList = false;
-    this.reorderButton = "Reorder Interests";
-  }
-
   getGroupsAndPosts() {
+    console.log("user:" + this.loginService.user);
     this.interestGroupService.getMyGroups(this.loginService.user).subscribe(g => {
       this.interests = g;
-      this.interestGroupService.getMyGroupPosts(g).subscribe(p =>{
-        this.postsList = p;
-        console.log(this.postsList);
-      })
+      console.log("interests: " + this.interests);
+      this.postsList = this.interestGroupService.getMyGroupPosts(g);
+      console.log("post List: " + this.postsList);
     });
+   
   }
 
 

@@ -42,12 +42,13 @@ export class InterestGroupServiceProvider {
     }
   }
 
-  getMyGroupPosts(group:any){
-    let fireList = null;
-    group.forEach(s =>{
-      fireList = this.database.list('groups/' + s.key)
-    })
-    return fireList.snapshotChanges();
+  getMyGroupPosts(groups:Array<any>){
+    console.log("group " + groups );
+     groups.forEach(s =>{
+       this.database.object('groups/' + s.payload.key)
+      .valueChanges().subscribe(res =>{console.log("res: " +res);return res});
+  });
+
   }
   
 
@@ -65,20 +66,48 @@ export class InterestGroupServiceProvider {
 
   createNewGroup(newGroupName: string) {
     console.log("create " + newGroupName);
-    if (newGroupName != undefined) {
-      let fireList = this.database.list('groups/');
+    let fireList = this.database.list('groups/');
+    if (newGroupName != undefined && !this.groupNameInUse(fireList, newGroupName)) {
+      
       let newMod = fireList.push(newGroupName);
       newMod.set({ group: newGroupName, events: '' });
     }
   }
 
+  groupNameInUse(list, name){
+    let fireList = list.snapshotChanges;
+    let fire = null;
+    let inUse = false;
+    for( fire in fireList){
+      if(fire.groupName == name){
+        inUse = true;
+        break;
+      }
+    } 
+    return inUse;
+  }
+
+  groupKeyInUse(list, key){
+    let fireList = list.snapshotChanges;
+    let fire = null;
+    let inUse = false;
+    for( fire in fireList){
+      console.log("key: "+fire.key);
+      if(fire.key == key){
+        inUse = true;
+        console.log("you are already subscribed to that group."); 
+        break;
+      }
+    } 
+    return inUse;
+  }
   deleteGroup(groupKey: any) {
     let fireList = this.database.list('groups/' + groupKey.key);
     fireList.remove();
 
     //delete user group references
     fireList = this.database.list('userGroups');
-    fireList.snapshotChanges().subscribe(
+    /*fireList.snapshotChanges().subscribe(
       snapshots => {
         snapshots.forEach(s => {
           s.payload.forEach(x => {
@@ -89,7 +118,7 @@ export class InterestGroupServiceProvider {
         }
         );
       }
-    );
+    );*/
   }
 
   createUserGroup(groupKey: any) {
@@ -97,12 +126,12 @@ export class InterestGroupServiceProvider {
       console.log("not authenticated - cant add group");
       return;
     }
-
-    if (groupKey != undefined) {
+    let fireList = this.database.list('userGroups/' + this.loginService.user.uid);
+    if (groupKey != undefined && this.groupKeyInUse(fireList, groupKey)) {
 
       // should check to see if it exists
 
-      let fireList = this.database.list('userGroups/' + this.loginService.user.uid);
+      
       let newMod = fireList.push(groupKey.key);
       newMod.set({
         groupKey: groupKey.key,
@@ -117,16 +146,16 @@ export class InterestGroupServiceProvider {
     return fireList.snapshotChanges();
   }
 
-  public createNewEvent(newEventName: string, groupId: string) {
+  createNewEvent(newEventName: string, newEventLocation: string, groupId: string) {
     console.log("create " + newEventName);
     if (newEventName != undefined) {
       let fireList = this.database.list("groups/" + groupId + '/events/');
       let newMod = fireList.push(newEventName);
-      newMod.set({ name: newEventName, createDTM: Date.now() });
+      newMod.set({name: newEventName, location: newEventLocation, createDTM: Date.now()});
     }
   }
 
-  public deleteEvent(eventKey: any, groupId: string) {
+  deleteEvent(eventKey: any, groupId: string) {
     let fireList = this.database.list("groups/" + groupId + "/events/" + eventKey);
     fireList.remove();
   }

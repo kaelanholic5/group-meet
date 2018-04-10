@@ -12,9 +12,10 @@ export class SearchPipe implements PipeTransform {
   transform(items: any[], terms: string): any[] {
     if(!items) return [];
     if(!terms) return items;
+    console.log("terms: "+terms);
     terms = terms.toLowerCase();
     return items.filter( it => {
-      return it.payload.val().group.toLowerCase().includes(terms);
+      return it.payload.val().groupName.toLowerCase().includes(terms);
     });
   }
 }

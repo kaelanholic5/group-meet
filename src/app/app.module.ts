@@ -20,6 +20,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuthProvider } from 'angularfire2/auth';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 
+import { AgmCoreModule } from '@agm/core';
+
 const config = {
   apiKey: "AIzaSyDWjx0pNw1BBJr1_qleUKO82KfnW18iBV8",
   authDomain: "eventconnector-adfe5.firebaseapp.com",
@@ -53,7 +55,11 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBGQUeBq2MTP30sc2gT8AHhDGsxlLOs_a8',
+      libraries: [ 'places' ]
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

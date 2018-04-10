@@ -15,7 +15,8 @@ export class InterestPage {
 
     parent: InterestPage;
     children: Array<InterestPage>;
-    forum: Array<Post>;
+  posts: any[];
+  events: any[];
     icon: ImageBitmap;
     globalInterests: Array<string>;
     groupId: string;
@@ -27,8 +28,12 @@ export class InterestPage {
         console.log(this.groupId);
         interestGroupService.getGroup(this.groupId).subscribe(g => {
             this.interestGroup = g;
-            this.interestName = g.payload.val().group;
+            this.interestName = g.group;
         });
+       
+      this.interestGroupService.getEvents(this.groupId).subscribe(e => {
+        this.events = e;
+      });
 
     }
 
@@ -39,4 +44,5 @@ export class InterestPage {
     goToInterest(inter: any) {
         this.navCtrl.push(InterestPage, { 'groupId': inter.key });
     }
+
 }
