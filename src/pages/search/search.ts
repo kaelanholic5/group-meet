@@ -5,10 +5,12 @@ import { Observable } from 'rxjs/Observable';
 import { InterestPage } from '../Interest/Interest';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase,
-  AngularFireList, AngularFireObject } from 'angularfire2/database';
+import {
+  AngularFireDatabaseModule, AngularFireDatabase,
+  AngularFireList, AngularFireObject
+} from 'angularfire2/database';
 import * as firebase from 'firebase/app';
-import {InterestGroupServiceProvider} from "../../providers/interestGroupService";
+import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 
 @Component({
   selector: 'page-search',
@@ -20,12 +22,12 @@ export class SearchPage {
   database: AngularFireDatabase;
 
   constructor(public navCtrl: NavController,
-              public af: AngularFireDatabase,
-              public interestGroupService: InterestGroupServiceProvider) {
+    public af: AngularFireDatabase,
+    public interestGroupService: InterestGroupServiceProvider) {
     this.database = af;
     console.log("getting groups");
     this.interestGroupService.getAllGroups().subscribe(s => {
-       this.interestGroups = s;
+      this.interestGroups = s;
     });
   }
 
@@ -33,8 +35,14 @@ export class SearchPage {
     this.navCtrl.push(InterestPage, { 'groupId': groupKey.key });
   }
 
-  createUserGroup(group: any)
-  {
+  createUserGroup(group: any) {
     this.interestGroupService.createUserGroup(group);
+  }
+  createNewGroup(group: any) {
+    this.interestGroupService.createNewGroup(group);
+  }
+
+  deleteGroup(group: any){
+    this.interestGroupService.deleteGroup(group);
   }
 }

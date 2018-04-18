@@ -15,8 +15,8 @@ export class InterestPage {
 
     parent: InterestPage;
     children: Array<InterestPage>;
-  posts: any[];
-  events: any[];
+    posts: Array<any>;
+    events: any[];
     icon: ImageBitmap;
     globalInterests: Array<string>;
     groupId: string;
@@ -26,14 +26,18 @@ export class InterestPage {
         console.log("initializing");
         this.groupId = navParams.get('groupId');
         console.log(this.groupId);
+        
         interestGroupService.getGroup(this.groupId).subscribe(g => {
-            this.interestGroup = g;
-            this.interestName = g.group;
+            console.log(g.payload.val().posts);
+            this.interestName = g.payload.val().groupName;
+            this.interestGroupService.getPosts(this.groupId).subscribe(p =>{
+                this.posts = p;
+            })
         });
-       
-      this.interestGroupService.getEvents(this.groupId).subscribe(e => {
-        this.events = e;
-      });
+
+        this.interestGroupService.getEvents(this.groupId).subscribe(e => {
+            this.events = e;
+        });
 
     }
 
