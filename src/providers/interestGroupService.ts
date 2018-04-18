@@ -23,7 +23,6 @@ export class InterestGroupServiceProvider {
 
   getAllGroups(): Observable<any> {
     let fireList = this.database.list('groups/');
-
     return fireList.snapshotChanges();
   }
 
@@ -44,7 +43,6 @@ export class InterestGroupServiceProvider {
 
   getPosts(groupId: string): Observable<any> {
     let fireList = this.database.list("groups/" + groupId + "/posts");
-
     return fireList.snapshotChanges();
   }
 
@@ -54,9 +52,7 @@ export class InterestGroupServiceProvider {
       this.database.object('groups/' + s.payload.key)
         .valueChanges().subscribe(res => { console.log("res: " + res); return res });
     });
-
   }
-
 
   getMyGroups(user: any) {
     if (user.value === null) {
@@ -73,61 +69,40 @@ export class InterestGroupServiceProvider {
 
   createNewGroup(newGroupName: string) {
     console.log("create " + newGroupName);
-    let fireList = this.database.list('groups/');//&& this.groupNameInUse(fireList, newGroupName)
+    let fireList = this.database.list('groups/');
+    let alreadyExists = false;
     if (newGroupName != undefined && newGroupName != '') {
-      let newMod = fireList.push(newGroupName);
-      newMod.set({ groupName: newGroupName, events: '' });
+      fireList.snapshotChanges().subscribe(s => {
+        s.forEach(e => {
+          console.log(e.payload.val().groupName);
+          if (e.payload.val().groupName === newGroupName) {
+            alreadyExists = true;
+          }
+        })
+        if (!alreadyExists) {
+          let newMod = fireList.push(newGroupName);
+          newMod.set({ groupName: newGroupName, events: '' });
+        }
+      })
     }
   }
 
   deleteGroup(groupKey: any) {
     let fireList = this.database.list('groups/' + groupKey.key);
     fireList.remove();
-
     let fireObject = this.database.object('userGroups');
-    fireObject.snapshotChanges().subscribe(s =>{
-    console.log(s.payload.val());
-    s.payload.forEach(e =>{
-      e.forEach(p =>{
-         if(p.val().groupKey === groupKey.key){
-          console.log("p "  +p.val().groupKey);
-          console.log("groupKey " + groupKey.key);
-          console.log("e " + e.key);
-          console.log("p key " + p.key);
-          //console.log(this.database.object('UserGroups/'+e.key + '/' +p.key));
-        //  let removeList = this.database.list('UserGroups/' +e.key);
-        console.log('userGroups/'+ e.key + '/' + p.key);
-        this.database.object('userGroups/'+ e.key + '/' + p.key).remove();   
-      }
-      })
-    })
-      
-    });
-    //snaps.keys().next();
-// .subscribe(
-//   snapshots =>{
-//     console.log("hey" + snapshots);
-//       snapshots.forEach(s =>{
-//         console.log("payloads:" + s);
-//         s.payload.forEach(x =>{
-//           // + x.val());
-//         })
-//       })
-//   })
-  //  })
+    fireObject.snapshotChanges().subscribe(s => {
+      console.log(s.payload.val());
+      s.payload.forEach(e => {
+        e.forEach(p => {
+          if (p.val().groupKey === groupKey.key) {
+            this.database.object('userGroups/' + e.key + '/' + p.key).remove();
+          }
+          return false;
+        })
+     return false; })
 
-    /*fireList.snapshotChanges().subscribe(
-      snapshots => {
-        snapshots.forEach(s => {
-          s.payload.forEach(x => {
-            if (x.val().groupKey === groupKey.key) {
-              this.database.object('userGroups/' + s.key + '/' + x.key).remove();
-            }
-          });
-        }
-        );
-      }
-    );*/
+    });
   }
 
   createUserGroup(groupKey: any) {
@@ -137,7 +112,6 @@ export class InterestGroupServiceProvider {
     }
     let fireList = this.database.list('userGroups/' + this.loginService.user.uid);
     let inUse = false;
-
     if (groupKey != undefined) {
       fireList.snapshotChanges().subscribe(
         snapshots => {
@@ -146,6 +120,7 @@ export class InterestGroupServiceProvider {
               if (x.val() === groupKey.key) {
                 inUse = true;
               }
+              return false;
             });
           });
           if (!inUse) {
@@ -161,12 +136,10 @@ export class InterestGroupServiceProvider {
 
   getEvents(groupId: string): Observable<any> {
     let fireList = this.database.list("groups/" + groupId + "/events");
-
     return fireList.snapshotChanges();
   }
 
   createNewEvent(newEventName: string, newEventLocation: string, groupId: string) {
-    console.log("create " + newEventName);
     if (newEventName != undefined) {
       let fireList = this.database.list("groups/" + groupId + '/events/');
       let newMod = fireList.push(newEventName);

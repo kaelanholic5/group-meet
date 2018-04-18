@@ -49,7 +49,7 @@
           <ion-scroll scrollY="true" class="interest-scrollbar">
                 <div *ngFor="let postGroup of postsList">
                   <ion-list >
-                    <ion-item class="interest-name-item" *ngFor="let post of postsGroup">
+                    <ion-item class="interest-name-item" *ngFor="let post of postGroup">
                   <div>{{post.name}}</div>
                   <div>{{post.text}}</div>
                   </ion-item>
