@@ -7,6 +7,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase,
   AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
+import {} from '@types/googlemaps';
 
 import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
 
@@ -22,6 +23,7 @@ export class EventsPage {
     search: FormControl;
     pins: pin[];
     searchControl: FormControl;
+    zoom: number = 0;
 
     latitude: number;
     longitude: number;
@@ -83,7 +85,6 @@ export class EventsPage {
         this.errorMessage = status.toString();
       } else {
         results.forEach(result => {
-          console.log("Found results!");
           console.log(result);
         //  this.dropPin(result, googleMap);
         })
@@ -91,7 +92,7 @@ export class EventsPage {
     });
   }
 
-  dropPin(result, map) {
+  dropPin(result) {
     this.latitude = result.geometry.location.lat();
     this.longitude = result.geometry.location.lng();
     this.zoom = 12;

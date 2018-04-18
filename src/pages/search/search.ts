@@ -20,12 +20,12 @@ export class SearchPage {
   database: AngularFireDatabase;
 
   constructor(public navCtrl: NavController,
-              public af: AngularFireDatabase,
-              public interestGroupService: InterestGroupServiceProvider) {
+      public af: AngularFireDatabase,
+      public interestGroupService: InterestGroupServiceProvider,
+      public loginService: LoginServiceProvider) {
     this.database = af;
-    console.log("getting groups");
     this.interestGroupService.getAllGroups().subscribe(s => {
-       this.interestGroups = s;
+      this.interestGroups = s;
     });
   }
 
@@ -33,8 +33,15 @@ export class SearchPage {
     this.navCtrl.push(InterestPage, { 'groupId': groupKey.key });
   }
 
-  createUserGroup(group: any)
-  {
+  createUserGroup(group: any) {
     this.interestGroupService.createUserGroup(group);
   }
+  createNewGroup(group: any) {
+    this.interestGroupService.createNewGroup(group);
+  }
+
+  deleteGroup(group: any){
+    this.interestGroupService.deleteGroup(group);
+  }
+
 }

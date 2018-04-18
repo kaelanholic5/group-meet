@@ -8,9 +8,9 @@
   <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let g of interestGroups | search : searchTerm">
-      <h1 style="float: left" (click)="goToInterestPage(g)">{{g.payload.val().group}}</h1>
+      <h1 style="float: left" (click)="goToInterestPage(g)">{{g.payload.val().groupName}}</h1>
       <button ion-button style="float: right" (click)="deleteGroup(g)">Delete</button>
-      <button ion-button style="float: right" (click)="createUserGroup(g)">Add to my groups</button>
+      <button *ngIf="loginService.user != null" ion-button style="float: right" (click)="createUserGroup(g)">Add to my groups</button>
     </ion-item>
   </ion-list>
   <button ion-button (click)="createNewGroup(newGroupName); newGroupName = '';">

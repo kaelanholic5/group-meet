@@ -5,7 +5,6 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AboutPage } from '../pages/about/about';
-import { ProfilePage } from '../pages/profile/profile';
 import { InterestPage } from '../pages/Interest/Interest';
 import { SearchPage } from '../pages/search/search';
 import { Post } from '../pages/Posts/Post';
@@ -39,7 +38,6 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
   declarations: [
     MyApp,
     AboutPage,
-    ProfilePage,
     HomePage,
     TabsPage,
     EventsPage,
@@ -65,7 +63,6 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
   entryComponents: [
     MyApp,
     AboutPage,
-    ProfilePage,
     HomePage,
     TabsPage,
     EventsPage,

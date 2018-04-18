@@ -1,34 +1,37 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Home</ion-title>
+    <button *ngIf="loginService.user != null" ion-button float-right (click)="logout()">
+      <ion-icon name="contact">Logout</ion-icon>
+    </button>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="body">
   <div *ngIf="loginService.user == null">
-    <button ion-button (click)="login()">
+    <button ion-button class="button-full" (click)="login()">
       Login
     </button>
   </div>
 
   <div *ngIf="loginService.user != null">
     <ion-grid>
-      <ion-row class="header-content">
-        <ion-col col-3 class="avatar-col">
+      <ion-row style="padding: 10px; border-bottom: 0.5px solid #B1C5C4">
+        <ion-col col-2 class="avatar-col">
           <ion-avatar>
-            <img class="avatar-image" src="assets/imgs/logo.png" />
+            <img class="avatar-image" [src]="loginService.user.photoURL"/>
           </ion-avatar>
         </ion-col>
-        <ion-col col-6 class="name-col">
+        <ion-col col-10 class="name-col">
           <div class="name-header">
-            First MI Last
+            {{loginService.user.displayName}}
           </div>
         </ion-col>
       </ion-row>
 
       <ion-row class="main-page">
-        <ion-col col-3 class="interest-name-list-col">
-          <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
+        <!--<ion-col col-3 class="interest-name-list-col">
+          <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>-->
           <!-- <div *ngIf="!reorderList">
             <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
           </div>
@@ -36,28 +39,29 @@
             <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
             <button ion-button (click)="cancelReorder()">Cancel</button>
           </div> -->
-          <ion-scroll scrollY="true" class="interest-scrollbar">
-            <ion-list > <!--reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)"-->
-              <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)">
+        <!--  <ion-scroll scrollY="true" class="interest-scrollbar">
+            <ion-list > --><!--reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)"-->
+             <!-- <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)">
                 <div>{{inter.payload.val().groupName}}</div>
               </ion-item>
             </ion-list>
           </ion-scroll>
-        </ion-col>
-        <ion-col col-x class="center-page-col">
-          <h1>Group Activity</h1>
-          <ion-scroll scrollY="true" class="interest-scrollbar">
-                <div *ngFor="let postGroup of postsList">
-                  <ion-list >
-                    <ion-item class="interest-name-item" *ngFor="let post of postsGroup">
-                  <div>{{post.name}}</div>
-                  <div>{{post.text}}</div>
-                  </ion-item>
-                  </ion-list>
-                </div>
-            </ion-scroll>
-          <h1>Upcoming Events</h1>
-          <ion-list></ion-list>
+        </ion-col>-->
+        <ion-col col-12 class="home-activities">
+          <div class="interest-group-header">Group Activity</div>
+          <div *ngIf="postsList == null || postsList.size < 1">
+            There are no current posts
+          </div>
+          <div>
+            <ion-list>
+              <ion-item class="interest-name-item" *ngFor="let post of postsList">
+                {{post.name}}
+                {{post.text}}
+              </ion-item>
+            </ion-list>
+          </div>
+          <!--<ion-scroll scrollY="true" class="interest-scrollbar">
+            </ion-scroll>-->
         </ion-col>
       </ion-row>
     </ion-grid>
