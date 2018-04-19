@@ -46,15 +46,9 @@ export class HomePage {
       console.log(this.postsList);
     });
   }
-<<<<<<< HEAD
 
   logout() {
     this.loginSubscription.unsubscribe();
     this.loginService.logout();
   }
 }
-
-
-=======
-}
->>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
