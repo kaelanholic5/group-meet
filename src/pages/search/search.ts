@@ -5,10 +5,12 @@ import { Observable } from 'rxjs/Observable';
 import { InterestPage } from '../Interest/Interest';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase,
-  AngularFireList, AngularFireObject } from 'angularfire2/database';
+import {
+  AngularFireDatabaseModule, AngularFireDatabase,
+  AngularFireList, AngularFireObject
+} from 'angularfire2/database';
 import * as firebase from 'firebase/app';
-import {InterestGroupServiceProvider} from "../../providers/interestGroupService";
+import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 
 @Component({
   selector: 'page-search',
@@ -20,9 +22,14 @@ export class SearchPage {
   database: AngularFireDatabase;
 
   constructor(public navCtrl: NavController,
+<<<<<<< HEAD
       public af: AngularFireDatabase,
       public interestGroupService: InterestGroupServiceProvider,
       public loginService: LoginServiceProvider) {
+=======
+    public af: AngularFireDatabase,
+    public interestGroupService: InterestGroupServiceProvider) {
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
     this.database = af;
     this.interestGroupService.getAllGroups().subscribe(s => {
       this.interestGroups = s;
@@ -43,5 +50,8 @@ export class SearchPage {
   deleteGroup(group: any){
     this.interestGroupService.deleteGroup(group);
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
 }

@@ -43,6 +43,7 @@ export class InterestGroupServiceProvider {
 
   getPosts(groupId: string): Observable<any> {
     let fireList = this.database.list("groups/" + groupId + "/posts");
+<<<<<<< HEAD
 
     return fireList.snapshotChanges();
   }
@@ -62,6 +63,19 @@ export class InterestGroupServiceProvider {
   }
 
 
+=======
+    return fireList.snapshotChanges();
+  }
+
+  getMyGroupPosts(groups: Array<any>) {
+    console.log("group " + groups);
+    groups.forEach(s => {
+      this.database.object('groups/' + s.payload.key)
+        .valueChanges().subscribe(res => { console.log("res: " + res); return res });
+    });
+  }
+
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
   getMyGroups(user: any) {
     if (user.value === null) {
       console.log("not authenticated :(");
@@ -98,20 +112,33 @@ export class InterestGroupServiceProvider {
   deleteGroup(groupKey: any) {
     let fireList = this.database.list('groups/' + groupKey.key);
     fireList.remove();
+<<<<<<< HEAD
 
     let fireObject = this.database.object('userGroups');
     fireObject.snapshotChanges().subscribe(s =>{
     console.log(s.payload.val());
     s.payload.forEach(e => {
+=======
+    let fireObject = this.database.object('userGroups');
+    fireObject.snapshotChanges().subscribe(s => {
+      console.log(s.payload.val());
+      s.payload.forEach(e => {
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
         e.forEach(p => {
           if (p.val().groupKey === groupKey.key) {
             this.database.object('userGroups/' + e.key + '/' + p.key).remove();
           }
           return false;
+<<<<<<< HEAD
         });
         return false;
       }
     )
+=======
+        })
+     return false; })
+
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
     });
   }
 
@@ -122,7 +149,10 @@ export class InterestGroupServiceProvider {
     }
     let fireList = this.database.list('userGroups/' + this.loginService.user.uid);
     let inUse = false;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
     if (groupKey != undefined) {
       fireList.snapshotChanges().subscribe(
         snapshots => {

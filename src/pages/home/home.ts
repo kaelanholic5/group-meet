@@ -18,14 +18,11 @@ export class HomePage {
   interests: Array<any>;
   errorMessage: string;
   column: string = 'name';
-  reorderList: boolean;
-  reorderButton: string;
   savedInterestOrder: Array<string>;
   user: any;
   loginSubscription: any;
   postsList: any;
   constructor(public navCtrl: NavController, public events: Events, public interestGroupService: InterestGroupServiceProvider, public loginService: LoginServiceProvider) {
-    this.reorderButton = "Reorder Interests";
   }
 
   public login() {
@@ -36,7 +33,7 @@ export class HomePage {
 
   goToInterest(inter: any) {
     console.log(inter);
-    this.navCtrl.push(InterestPage, { 'groupId': inter.key });
+    this.navCtrl.push(InterestPage, { 'groupId': inter.payload.val().groupKey });
   }
 
   getGroupsAndPosts() {
@@ -49,6 +46,7 @@ export class HomePage {
       console.log(this.postsList);
     });
   }
+<<<<<<< HEAD
 
   logout() {
     this.loginSubscription.unsubscribe();
@@ -57,3 +55,6 @@ export class HomePage {
 }
 
 
+=======
+}
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025

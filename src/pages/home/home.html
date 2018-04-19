@@ -46,6 +46,7 @@
               </ion-item>
             </ion-list>
           </ion-scroll>
+<<<<<<< HEAD
         </ion-col>-->
         <ion-col col-12 class="home-activities">
           <div class="interest-group-header">Group Activity</div>
@@ -62,6 +63,23 @@
           </div>
           <!--<ion-scroll scrollY="true" class="interest-scrollbar">
             </ion-scroll>-->
+=======
+        </ion-col>
+        <ion-col col-x class="center-page-col">
+          <h1>Group Activity</h1>
+          <ion-scroll scrollY="true" class="interest-scrollbar">
+                <div *ngFor="let postGroup of postsList">
+                  <ion-list >
+                    <ion-item class="interest-name-item" *ngFor="let post of postGroup">
+                  <div>{{post.name}}</div>
+                  <div>{{post.text}}</div>
+                  </ion-item>
+                  </ion-list>
+                </div>
+            </ion-scroll>
+          <h1>Upcoming Events</h1>
+          <ion-list></ion-list>
+>>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
         </ion-col>
       </ion-row>
     </ion-grid>
