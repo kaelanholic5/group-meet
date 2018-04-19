@@ -1,5 +1,7 @@
 <ion-header>
+
   <ion-navbar>
+    <ion-tab>here</ion-tab>
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
@@ -27,35 +29,30 @@
       </ion-row>
 
       <ion-row class="main-page">
+
         <ion-col col-3 class="interest-name-list-col">
           <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
-          <!-- <div *ngIf="!reorderList">
-            <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
-          </div>
-          <div *ngIf="reorderList">
-            <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
-            <button ion-button (click)="cancelReorder()">Cancel</button>
-          </div> -->
           <ion-scroll scrollY="true" class="interest-scrollbar">
-            <ion-list > <!--reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)"-->
+            <ion-list>
               <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)">
                 <div>{{inter.payload.val().groupName}}</div>
               </ion-item>
             </ion-list>
           </ion-scroll>
         </ion-col>
+
         <ion-col col-x class="center-page-col">
           <h1>Group Activity</h1>
           <ion-scroll scrollY="true" class="interest-scrollbar">
-                <div *ngFor="let postGroup of postsList">
-                  <ion-list >
-                    <ion-item class="interest-name-item" *ngFor="let post of postGroup">
+            <div *ngFor="let postGroup of postsList">
+              <ion-list>
+                <ion-item class="interest-name-item" *ngFor="let post of postGroup">
                   <div>{{post.name}}</div>
                   <div>{{post.text}}</div>
-                  </ion-item>
-                  </ion-list>
-                </div>
-            </ion-scroll>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-scroll>
           <h1>Upcoming Events</h1>
           <ion-list></ion-list>
         </ion-col>
