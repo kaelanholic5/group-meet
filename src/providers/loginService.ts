@@ -23,4 +23,8 @@ export class LoginServiceProvider {
       .catch(res => { this.loggedIn = false; }));
   }
 
+  logout() {
+    this.ang.auth.signOut().then( res => this.user = null );
+  }
+
 }

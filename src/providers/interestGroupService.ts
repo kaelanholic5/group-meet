@@ -43,16 +43,24 @@ export class InterestGroupServiceProvider {
 
   getPosts(groupId: string): Observable<any> {
     let fireList = this.database.list("groups/" + groupId + "/posts");
+
     return fireList.snapshotChanges();
   }
 
-  getMyGroupPosts(groups: Array<any>) {
-    console.log("group " + groups);
+  getMyGroupPosts (groups: Array<any>): Array<any> {
+    console.log("Getting my group posts");
+    let myPosts = Array<any>();
+    let counter: number = 0;
     groups.forEach(s => {
-      this.database.object('groups/' + s.payload.key)
-        .valueChanges().subscribe(res => { console.log("res: " + res); return res });
+      let path = 'groups/' + s.payload.val().groupKey + '/posts';
+      console.log(path);
+      this.database.list(path).snapshotChanges().map(res => {
+          res.forEach(s => {myPosts.push(s.payload.val())});
+        }).toPromise().then(res => {console.log("sucess")}).catch(res => {console.log("failure")});
     });
+    return myPosts;
   }
+
 
   getMyGroups(user: any) {
     if (user.value === null) {
@@ -90,18 +98,20 @@ export class InterestGroupServiceProvider {
   deleteGroup(groupKey: any) {
     let fireList = this.database.list('groups/' + groupKey.key);
     fireList.remove();
+
     let fireObject = this.database.object('userGroups');
-    fireObject.snapshotChanges().subscribe(s => {
-      console.log(s.payload.val());
-      s.payload.forEach(e => {
+    fireObject.snapshotChanges().subscribe(s =>{
+    console.log(s.payload.val());
+    s.payload.forEach(e => {
         e.forEach(p => {
           if (p.val().groupKey === groupKey.key) {
             this.database.object('userGroups/' + e.key + '/' + p.key).remove();
           }
           return false;
-        })
-     return false; })
-
+        });
+        return false;
+      }
+    )
     });
   }
 
@@ -112,6 +122,7 @@ export class InterestGroupServiceProvider {
     }
     let fireList = this.database.list('userGroups/' + this.loginService.user.uid);
     let inUse = false;
+
     if (groupKey != undefined) {
       fireList.snapshotChanges().subscribe(
         snapshots => {

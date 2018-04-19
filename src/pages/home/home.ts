@@ -30,20 +30,25 @@ export class HomePage {
       this.getGroupsAndPosts();
     });
   }
- 
+
   goToInterest(inter: any) {
     console.log(inter);
     this.navCtrl.push(InterestPage, { 'groupId': inter.payload.val().groupKey });
   }
 
   getGroupsAndPosts() {
-    console.log("user:" + this.loginService.user);
+    console.log(this.loginService.user);
     this.interestGroupService.getMyGroups(this.loginService.user).subscribe(g => {
       this.interests = g;
       console.log("interests: " + this.interests);
       this.postsList = this.interestGroupService.getMyGroupPosts(g);
-      console.log("post List: " + this.postsList);
+      console.log("posts:::");
+      console.log(this.postsList);
     });
-   
+  }
+
+  logout() {
+    this.loginSubscription.unsubscribe();
+    this.loginService.logout();
   }
 }
