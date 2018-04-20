@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { App, NavController, NavParams, Events, Tabs } from 'ionic-angular';
+import {App, NavController, NavParams, Events, Tabs, PopoverController} from 'ionic-angular';
 import { InterestPage } from '../Interest/Interest';
 import { Post } from '../Posts/Post';
+import { PopoverPage } from '../popover/popover';
 import { FormControl } from '@angular/forms';
 import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 import { LoginServiceProvider } from '../../providers/loginService';
@@ -22,7 +23,9 @@ export class HomePage {
   user: any;
   loginSubscription: any;
   postsList: any;
-  constructor(public navCtrl: NavController, public events: Events, public interestGroupService: InterestGroupServiceProvider, public loginService: LoginServiceProvider) {
+  constructor(public navCtrl: NavController, public events: Events,
+              public interestGroupService: InterestGroupServiceProvider,
+              public loginService: LoginServiceProvider, public popoverController: PopoverController) {
   }
 
   public login() {
@@ -50,5 +53,16 @@ export class HomePage {
   logout() {
     this.loginSubscription.unsubscribe();
     this.loginService.logout();
+  }
+
+  showPopover(event) {
+    let popover = this.popoverController.create(
+      PopoverPage, {
+
+      }
+    );
+    popover.present({
+      ev: event
+    })
   }
 }

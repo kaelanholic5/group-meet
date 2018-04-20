@@ -3,6 +3,7 @@ import { Post } from '../Posts/Post';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 import { FormControl } from '@angular/forms';
+import {EventsPage} from "../events/events";
 
 @Component({
     selector: 'page-Interest',
@@ -23,10 +24,8 @@ export class InterestPage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams,
         public interestGroupService: InterestGroupServiceProvider) {
-        console.log("initializing");
         this.groupId = navParams.get('groupId');
-        console.log(this.groupId);
-        
+
         interestGroupService.getGroup(this.groupId).subscribe(g => {
             console.log(g.payload.val().posts);
             this.interestName = g.payload.val().groupName;
@@ -47,6 +46,10 @@ export class InterestPage {
 
     goToInterest(inter: any) {
         this.navCtrl.push(InterestPage, { 'groupId': inter.key });
+    }
+
+    createEvent() {
+      this.navCtrl.push(EventsPage, { 'groupId': this.groupId });
     }
 
 }

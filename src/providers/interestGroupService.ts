@@ -10,6 +10,7 @@ import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { AngularFireDatabase } from "angularfire2/database";
 import { LoginServiceProvider } from "./loginService";
+import ThenableReference = firebase.database.ThenableReference;
 
 @Injectable()
 export class InterestGroupServiceProvider {
@@ -33,11 +34,8 @@ export class InterestGroupServiceProvider {
 
   createNewPost(newPostName: string, groupId: string, newPostText) {
     if (newPostName != undefined) {
-      if (newPostText == undefined) {
-        newPostText = "";
-      }
       let fireList = this.database.list("groups/" + groupId + '/posts/');
-      let newMod = fireList.push({ name: newPostName, createDTM: Date.now(), text: newPostText });
+      fireList.push({ name: newPostName, createDTM: Date.now(), text: newPostText });
     }
   }
 
@@ -150,12 +148,9 @@ export class InterestGroupServiceProvider {
     return fireList.snapshotChanges();
   }
 
-  createNewEvent(newEventName: string, newEventLocation: string, groupId: string) {
-    if (newEventName != undefined) {
+  createNewEvent(groupId: string, name: string, location: string, date: string, time: string): ThenableReference {
       let fireList = this.database.list("groups/" + groupId + '/events/');
-      let newMod = fireList.push(newEventName);
-      newMod.set({ name: newEventName, location: newEventLocation, createDTM: Date.now() });
-    }
+      return fireList.push({ name: name, location: location, date: date, time: time, createDTM: Date.now()});
   }
 
   deleteEvent(eventKey: any, groupId: string) {

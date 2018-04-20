@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 import {} from '@types/googlemaps';
 
 import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
+import {InterestGroupServiceProvider} from "../../providers/interestGroupService";
 
 @Component({
   selector: 'page-events',
@@ -17,28 +18,79 @@ import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
 })
 export class EventsPage {
 
-    database: AngularFireDatabase;
-    events: any[];
-    groupId: string;
-    search: FormControl;
-    pins: pin[];
-    searchControl: FormControl;
-    zoom: number = 0;
+  database: AngularFireDatabase;
+  events: any[];
+  search: FormControl;
+  pins: pin[];
+  searchControl: FormControl;
+  zoom: number = 0;
 
-    latitude: number;
-    longitude: number;
+  latitude: number;
+  longitude: number;
 
-    errorMessage: string;
-    results: any[];
+  errorMessage: string;
+  results: any[];
+
+  creatingEventForGroup: boolean = false;
+  groupId: string;
+  interestGroupName: string;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
+  newEventName: string;
+  eventTime: string;
+  eventDate: string;
+  todaysDate: Date;
+  endDate: Date;
+  eventLocation: string;
+
   constructor(private navCtrl: NavController, private navParams: NavParams,
               private af: AngularFireDatabase, private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone, public interestGroupService: InterestGroupServiceProvider) {
         this.database = af;
         this.pins = [];
+
+      this.groupId = navParams.get('groupId');
+
+      this.todaysDate = new Date(Date.now());
+      this.endDate = new Date(Date.now());
+      this.endDate.setFullYear(this.endDate.getFullYear() + 5);
+
+      if (this.groupId !=  null) {
+        this.creatingEventForGroup = true;
+        interestGroupService.getGroup(this.groupId).subscribe(g => {
+          this.interestGroupName = g.payload.val().groupName;
+          });
+      }
+  }
+
+  createEvent() {
+    if (this.newEventName == null || this.newEventName == '') {
+      this.errorMessage = 'Please enter an event name.';
+      return;
+    }
+    if (this.eventDate == null) {
+      this.errorMessage = 'Please enter an event date.';
+      return;
+    }
+    if (this.eventTime == null) {
+      this.errorMessage = 'Please enter an event time.';
+      return;
+    }
+    if (this.eventLocation == null) {
+      this.errorMessage = 'Please choose an event location.';
+      return;
+    }
+
+    this.interestGroupService.createNewEvent(this.groupId, this.newEventName, this.eventLocation,
+      this.eventDate, this.eventTime).then(res => {
+      this.errorMessage = "Event '" + this.newEventName + "' has been successfully created!";
+      this.newEventName = null;
+      this.eventLocation = null;
+      this.eventTime = null;
+      this.eventDate = null;
+    });
   }
 
   ngOnInit() {
@@ -50,7 +102,7 @@ export class EventsPage {
 
     this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+        types: []
       });
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
@@ -105,7 +157,7 @@ export class EventsPage {
   }
 
   markerClick(pin: pin) {
-    //do something?
+    this.eventLocation = pin.name;
     console.log(pin.name + " was clicked!");
   }
 }
