@@ -48,15 +48,15 @@ export class InterestGroupServiceProvider {
   }
 
   getMyGroupPosts (groups: Array<any>): Array<any> {
-    console.log("Getting my group posts");
     let myPosts = Array<any>();
     let counter: number = 0;
     groups.forEach(s => {
       let path = 'groups/' + s.payload.val().groupKey + '/posts';
       console.log(path);
       this.database.list(path).snapshotChanges().map(res => {
-          res.forEach(s => {myPosts.push(s.payload.val())});
-        }).toPromise().then(res => {console.log("sucess")}).catch(res => {console.log("failure")});
+          res.forEach(s => {myPosts.push(s.payload.val()); });
+          myPosts.sort(function(a,b){return b.createDTM - a.createDTM });
+        }).toPromise().then(res => {console.log("sucess"); }).catch(res => {console.log("failure")});
     });
     return myPosts;
   }

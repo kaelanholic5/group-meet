@@ -1,0 +1,35 @@
+page-home {
+
+}
+page-home {
+
+}
+
+@media (min-width: 768px){
+    .hiddenWhenFullScreen {
+        display:none;
+    } 
+}
+
+@media (max-width:768px){
+    .interest-name-list-col{
+        display:none;
+    }
+}
+
+
+
+
+.body{
+    background-color:  #c4f8ff;
+}
+
+.interest-scrollbar{
+    height:88%;
+    width:100%;
+}
+
+
+.main-page{
+    height:500px; 
+}

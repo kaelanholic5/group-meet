@@ -2,7 +2,6 @@ import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NavController, NavParams } from 'ionic-angular';
-
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase,
   AngularFireList, AngularFireObject } from 'angularfire2/database';

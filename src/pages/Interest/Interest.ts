@@ -32,6 +32,7 @@ export class InterestPage {
             this.interestName = g.payload.val().groupName;
             this.interestGroupService.getPosts(this.groupId).subscribe(p =>{
                 this.posts = p;
+                this.posts.sort(function(a,b){return b.payload.val().createDTM - a.payload.val().createDTM });
             })
         });
 

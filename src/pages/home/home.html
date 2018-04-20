@@ -1,10 +1,12 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-tab>here</ion-tab>
     <ion-title>Home</ion-title>
-    <button *ngIf="loginService.user != null" ion-button float-right (click)="logout()">
-      <ion-icon name="contact">Logout</ion-icon>
+    <div class="hiddenWhenFullScreen">
+      hi
+    </div>
+    <button *ngIf="loginService.user != null" ion-button (click)="logout()">
+        <ion-icon name="contact">Logout</ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
@@ -24,16 +26,19 @@
             <img class="avatar-image" [src]="loginService.user.photoURL"/>
           </ion-avatar>
         </ion-col>
-        <ion-col col-10 class="name-col">
+        <ion-col col-8 class="name-col">
           <div class="name-header">
             {{loginService.user.displayName}}
           </div>
         </ion-col>
+        <ion-col col-2>
+        
+        </ion-col>
       </ion-row>
 
       <ion-row class="main-page">
-        <!--<ion-col col-3 class="interest-name-list-col">
-          <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>-->
+        <ion-col col-3 class="interest-name-list-col">
+          <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
           <!-- <div *ngIf="!reorderList">
             <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
           </div>
@@ -41,24 +46,24 @@
             <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
             <button ion-button (click)="cancelReorder()">Cancel</button>
           </div> -->
-        <!--  <ion-scroll scrollY="true" class="interest-scrollbar">
-            <ion-list > --><!--reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)"-->
-             <!-- <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)">
+          <ion-scroll scrollY="true" class="interest-scrollbar">
+            <ion-list > <!--reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)"-->
+              <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)">
                 <div>{{inter.payload.val().groupName}}</div>
               </ion-item>
             </ion-list>
           </ion-scroll>
-        </ion-col>-->
-        <ion-col col-12 class="home-activities">
+        </ion-col>
+        <ion-col class="home-activities">
           <div class="interest-group-header">Group Activity</div>
           <div *ngIf="postsList == null || postsList.size < 1">
             There are no current posts
           </div>
           <div>
-            <ion-list>
-              <ion-item class="interest-name-item" *ngFor="let post of postsList">
-                {{post.name}}
-                {{post.text}}
+            <ion-list class="post-list">
+              <ion-item text-wrap class="interest-post-item" *ngFor="let post of postsList">
+                <div class="interest-post-name">{{post.name}}</div>
+                <div class="interest-post-text">{{post.text}}</div>
               </ion-item>
             </ion-list>
           </div>

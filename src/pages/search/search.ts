@@ -22,14 +22,9 @@ export class SearchPage {
   database: AngularFireDatabase;
 
   constructor(public navCtrl: NavController,
-<<<<<<< HEAD
       public af: AngularFireDatabase,
       public interestGroupService: InterestGroupServiceProvider,
       public loginService: LoginServiceProvider) {
-=======
-    public af: AngularFireDatabase,
-    public interestGroupService: InterestGroupServiceProvider) {
->>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
     this.database = af;
     this.interestGroupService.getAllGroups().subscribe(s => {
       this.interestGroups = s;
@@ -50,8 +45,4 @@ export class SearchPage {
   deleteGroup(group: any){
     this.interestGroupService.deleteGroup(group);
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> c3cb1ae88dd34694598379b486c188dc1b232025
 }

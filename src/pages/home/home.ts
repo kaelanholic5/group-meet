@@ -21,7 +21,7 @@ export class HomePage {
   savedInterestOrder: Array<string>;
   user: any;
   loginSubscription: any;
-  postsList: any;
+  postsList: Array<any>;
   constructor(public navCtrl: NavController, public events: Events, public interestGroupService: InterestGroupServiceProvider, public loginService: LoginServiceProvider) {
   }
 
@@ -42,8 +42,6 @@ export class HomePage {
       this.interests = g;
       console.log("interests: " + this.interests);
       this.postsList = this.interestGroupService.getMyGroupPosts(g);
-      console.log("posts:::");
-      console.log(this.postsList);
     });
   }
 
@@ -51,4 +49,6 @@ export class HomePage {
     this.loginSubscription.unsubscribe();
     this.loginService.logout();
   }
+
+
 }
