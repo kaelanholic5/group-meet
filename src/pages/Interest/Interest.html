@@ -10,10 +10,7 @@
             <button ion-button (click)="addPost(newPostName, newPostText); newPostName='';newPostText ='';">Create Post</button>
             <ion-input placeholder="Enter Post Name" [(ngModel)]="newPostName"></ion-input>
             <ion-input placeholder="Enter Post Text" [(ngModel)]="newPostText"></ion-input>
-            <button ion-button (click)="errorMessage=''; addEvent(newEventName, newEventLocation);
-          newEventName=''; newEventLocation='';">Create Event</button>
-            <ion-input placeholder="Enter Event Name" [(ngModel)]="newEventName"></ion-input>
-            <ion-input placeholder="Enter Event Location" [(ngModel)]="newEventLocation"></ion-input>
+            <button ion-button (click)="createEvent()">Create Event</button>
             <ion-label>{{errorMessage}}</ion-label>
         </ion-col>
         <ion-list col-8>
@@ -26,6 +23,7 @@
             <ion-list-header>Events</ion-list-header>
             <ion-item class="post-item-list" *ngFor="let event of events">
                 <div>{{event.payload.val().name}}</div>
+                <div>{{event.payload.val().date | date}} {{event.payload.val().time}}</div>
                 <div style="float: left">{{event.payload.val().location}}</div>
             </ion-item>
 

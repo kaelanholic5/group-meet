@@ -4,22 +4,11 @@ page-home {
 page-home {
 
 }
-
-@media (min-width: 768px){
-    .hiddenWhenFullScreen {
-        display:none;
-    } 
-}
-
-@media (max-width:768px){
+@media (min-width:768px){
     .interest-name-list-col{
-        display:none;
+        width:20%;
     }
 }
-
-
-
-
 .body{
     background-color:  #c4f8ff;
 }

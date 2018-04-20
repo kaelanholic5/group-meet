@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { App, NavController, NavParams, Events, Tabs } from 'ionic-angular';
+import { Component, OnInit, HostListener } from '@angular/core';
+import {App, NavController, NavParams, Events, Tabs, PopoverController} from 'ionic-angular';
 import { InterestPage } from '../Interest/Interest';
 import { Post } from '../Posts/Post';
+import { PopoverPage } from '../popover/popover';
 import { FormControl } from '@angular/forms';
 import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 import { LoginServiceProvider } from '../../providers/loginService';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-
+import {MobileHomeDisplayService} from "../../providers/mobileHomeDisplayControlService";
 
 @Component({
   selector: 'page-home',
@@ -21,8 +22,13 @@ export class HomePage {
   savedInterestOrder: Array<string>;
   user: any;
   loginSubscription: any;
-  postsList: Array<any>;
-  constructor(public navCtrl: NavController, public events: Events, public interestGroupService: InterestGroupServiceProvider, public loginService: LoginServiceProvider) {
+  postsList: any;
+  popoverTab: any;
+  screenWidth: any;
+  constructor(public navCtrl: NavController, public events: Events,
+              public interestGroupService: InterestGroupServiceProvider,
+              public loginService: LoginServiceProvider, public popoverController: PopoverController,
+              public mobileHomeService: MobileHomeDisplayService) {
   }
 
   public login() {
@@ -50,5 +56,25 @@ export class HomePage {
     this.loginService.logout();
   }
 
+  showPopover(event) {
+    let popover = this.popoverController.create(
+      PopoverPage, {
 
+      }
+    );
+    popover.present({
+      ev: event
+    })
+    this.popoverTab = popover;
+  }
+
+  ngOnInit(){
+    this.screenWidth = window.innerWidth;
+  }
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event){
+    this.screenWidth = window.innerWidth;
+  }
+  
 }

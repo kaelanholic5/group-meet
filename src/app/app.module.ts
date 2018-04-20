@@ -11,6 +11,7 @@ import { Post } from '../pages/Posts/Post';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { EventsPage } from '../pages/events/events';
+import { PopoverPage } from '../pages/popover/popover';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -18,7 +19,7 @@ import { LoginServiceProvider } from '../providers/loginService';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuthProvider } from 'angularfire2/auth';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
-
+import {MobileHomeDisplayService} from "../providers/mobileHomeDisplayControlService";
 import { AgmCoreModule } from '@agm/core';
 
 const config = {
@@ -45,6 +46,7 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     SortPipe,
     InterestPage,
     SearchPage,
+    PopoverPage,
     Post
   ],
   imports: [
@@ -67,7 +69,8 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     TabsPage,
     EventsPage,
     SearchPage,
-    InterestPage
+    InterestPage,
+    PopoverPage
   ],
   providers: [
     StatusBar,
@@ -75,7 +78,8 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginServiceProvider,
     AngularFireAuthProvider,
-    InterestGroupServiceProvider
+    InterestGroupServiceProvider,
+    MobileHomeDisplayService
   ]
 })
 

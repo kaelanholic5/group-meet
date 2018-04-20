@@ -1,13 +1,15 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Home</ion-title>
-    <div class="hiddenWhenFullScreen">
-      hi
+
+    <div *ngIf="screenWidth <= 768" class="popupTabLogout">
+      <ion-buttons end>
+        <button *ngIf="loginService.user != null" ion-button icon-only (click)="showPopover($event)">
+          <ion-icon name="ios-more"></ion-icon>
+        </button>
+      </ion-buttons>
     </div>
-    <button *ngIf="loginService.user != null" ion-button (click)="logout()">
-        <ion-icon name="contact">Logout</ion-icon>
-    </button>
+    <ion-title text-center>Home</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -17,13 +19,12 @@
       Login
     </button>
   </div>
-
   <div *ngIf="loginService.user != null">
     <ion-grid>
       <ion-row style="padding: 10px; border-bottom: 0.5px solid #B1C5C4">
         <ion-col col-2 class="avatar-col">
           <ion-avatar>
-            <img class="avatar-image" [src]="loginService.user.photoURL"/>
+            <img class="avatar-image" [src]="loginService.user.photoURL" />
           </ion-avatar>
         </ion-col>
         <ion-col col-8 class="name-col">
@@ -31,44 +32,47 @@
             {{loginService.user.displayName}}
           </div>
         </ion-col>
-        <ion-col col-2>
-        
+        <ion-col *ngIf="screenWidth > 768" col-2>
+          <button class="logoutButton" ion-button float-right (click)="logout()">
+            <ion-icon name="contact">Logout</ion-icon>
+          </button>
         </ion-col>
       </ion-row>
 
       <ion-row class="main-page">
-        <ion-col col-3 class="interest-name-list-col">
+
+        <ion-col *ngIf="(mobileHomeService.showSearch || screenWidth > 768)" [attr.col-3]="screenWidth > 768 ? '' : null" class="interest-name-list-col">
           <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
-          <!-- <div *ngIf="!reorderList">
-            <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
-          </div>
-          <div *ngIf="reorderList">
-            <button ion-button (click)="reorderInterests()">{{reorderButton}}</button>
-            <button ion-button (click)="cancelReorder()">Cancel</button>
-          </div> -->
           <ion-scroll scrollY="true" class="interest-scrollbar">
-            <ion-list > <!--reorder="{{reorderList}}" (ionItemReorder)="reorderItems($event)"-->
+            <ion-list>
               <ion-item class="interest-name-item" *ngFor="let inter of interests  | search : searchTerm" (click)="goToInterest(inter)">
                 <div>{{inter.payload.val().groupName}}</div>
               </ion-item>
             </ion-list>
           </ion-scroll>
         </ion-col>
-        <ion-col class="home-activities">
-          <div class="interest-group-header">Group Activity</div>
-          <div *ngIf="postsList == null || postsList.size < 1">
-            There are no current posts
-          </div>
+
+        <ion-col *ngIf="(screenWidth <= 768 && mobileHomeService.showPosts) || screenWidth > 768" class="home-posts">
           <div>
-            <ion-list class="post-list">
+            <div class="interest-group-header">Group Posts</div>
+            <div *ngIf="postsList == null || postsList.size < 1">
+              There are no current posts
+            </div>
+
+            <ion-list>
               <ion-item text-wrap class="interest-post-item" *ngFor="let post of postsList">
                 <div class="interest-post-name">{{post.name}}</div>
                 <div class="interest-post-text">{{post.text}}</div>
               </ion-item>
             </ion-list>
           </div>
-          <!--<ion-scroll scrollY="true" class="interest-scrollbar">
-            </ion-scroll>-->
+        </ion-col>
+
+        <ion-col *ngIf="(screenWidth <= 768 && mobileHomeService.showEvents) || screenWidth > 768" class="home-events">
+          <div class="interest-group-header">Group Events</div>
+          <div *ngIf="postsList == null || postsList.size < 1">
+            There are no current Events
+          </div>events
         </ion-col>
       </ion-row>
     </ion-grid>
