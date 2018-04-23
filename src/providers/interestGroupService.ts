@@ -33,10 +33,9 @@ export class InterestGroupServiceProvider {
   }
 
   createNewPost(newPostName: string, groupId: string, newPostText) {
-    if (newPostName != undefined) {
       let fireList = this.database.list("groups/" + groupId + '/posts/');
-      fireList.push({ name: newPostName, createDTM: Date.now(), text: newPostText });
-    }
+      return fireList.push({ name: newPostName, createDTM: Date.now(), text: newPostText });
+
   }
 
   getPosts(groupId: string): Observable<any> {
@@ -59,6 +58,19 @@ export class InterestGroupServiceProvider {
     return myPosts;
   }
 
+  getMyGroupEvents (groups: Array<any>): Array<any> {
+    let myEvents = Array<any>();
+    let counter: number = 0;
+    groups.forEach(s => {
+      let path = 'groups/' + s.payload.val().groupKey + '/events';
+      console.log(path);
+      this.database.list(path).snapshotChanges().map(res => {
+          res.forEach(s => {myEvents.push(s.payload.val()); });
+          myEvents.sort(function(a,b){return b.createDTM - a.createDTM });
+        }).toPromise().then(res => {console.log("sucess"); }).catch(res => {console.log("failure")});
+    });
+    return myEvents;
+  }
 
   getMyGroups(user: any) {
     if (user.value === null) {

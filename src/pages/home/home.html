@@ -52,13 +52,12 @@
           </ion-scroll>
         </ion-col>
 
-        <ion-col *ngIf="(screenWidth <= 768 && mobileHomeService.showPosts) || screenWidth > 768" class="home-posts">
+        <ion-col *ngIf="(screenWidth <= 768 && mobileHomeService.showPosts) || screenWidth > 768" [attr.col-6]="screenWidth > 768 ? '' : null" class="home-posts">
           <div>
             <div class="interest-group-header">Group Posts</div>
-            <div *ngIf="postsList == null || postsList.size < 1">
+            <div *ngIf="postsList == null || postsList.length < 1">
               There are no current posts
             </div>
-
             <ion-list>
               <ion-item text-wrap class="interest-post-item" *ngFor="let post of postsList">
                 <div class="interest-post-name">{{post.name}}</div>
@@ -68,11 +67,18 @@
           </div>
         </ion-col>
 
-        <ion-col *ngIf="(screenWidth <= 768 && mobileHomeService.showEvents) || screenWidth > 768" class="home-events">
+        <ion-col *ngIf="(screenWidth <= 768 && mobileHomeService.showEvents) || screenWidth > 768" [attr.col-3]="screenWidth > 768 ? '' : null" class="home-events">
           <div class="interest-group-header">Group Events</div>
-          <div *ngIf="postsList == null || postsList.size < 1">
+          <div *ngIf="postsList == null || postsList.length < 1">
             There are no current Events
-          </div>events
+          </div>
+          <ion-list>
+            <ion-item text-wrap class="interest-post-item" *ngFor="let event of eventsList">
+              <div class="interest-post-name">{{event.name}}</div>
+              <div class="interest-post-text">{{event.date | date}} {{event.time}}</div>
+            <div class="interest-post-text">{{event.location}}</div>
+            </ion-item>
+          </ion-list>
         </ion-col>
       </ion-row>
     </ion-grid>

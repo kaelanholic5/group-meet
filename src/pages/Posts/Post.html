@@ -1,3 +1,13 @@
-<div>
-    {{text}}
-</div>
+<ion-header>
+        <ion-navbar>
+          <ion-title text-center *ngIf="!creatingEventForGroup">Post</ion-title>
+          <ion-title text-center *ngIf="creatingEventForGroup">Create New Post For {{interestGroupName}}</ion-title>
+        </ion-navbar>
+        </ion-header>
+
+<ion-content>
+        <ion-label>{{errorMessage}}</ion-label>
+        <ion-input placeholder="Enter Post Name" [(ngModel)]="newPostName"></ion-input>
+        <ion-textarea style="width:100%;" placeholder="Enter Post Text" [(ngModel)]="newPostText" autosizeInput></ion-textarea>
+        <button ion-button align-self-center clear style="width: 100%" (click)="addPost();">Create Post</button>
+    </ion-content>

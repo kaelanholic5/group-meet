@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import {App, NavController, NavParams, Events, Tabs, PopoverController} from 'ionic-angular';
 import { InterestPage } from '../Interest/Interest';
-import { Post } from '../Posts/Post';
+import { PostPage } from '../Posts/Post';
 import { PopoverPage } from '../popover/popover';
 import { FormControl } from '@angular/forms';
 import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
@@ -23,6 +23,7 @@ export class HomePage {
   user: any;
   loginSubscription: any;
   postsList: any;
+  eventsList: any;
   popoverTab: any;
   screenWidth: any;
   constructor(public navCtrl: NavController, public events: Events,
@@ -33,7 +34,7 @@ export class HomePage {
 
   public login() {
     this.loginSubscription = this.loginService.login().subscribe(data =>{
-      this.getGroupsAndPosts();
+      this.getGroupInformation();
     });
   }
 
@@ -42,13 +43,16 @@ export class HomePage {
     this.navCtrl.push(InterestPage, { 'groupId': inter.payload.val().groupKey });
   }
 
-  getGroupsAndPosts() {
+  getGroupInformation() {
     console.log(this.loginService.user);
     this.interestGroupService.getMyGroups(this.loginService.user).subscribe(g => {
       this.interests = g;
       console.log("interests: " + this.interests);
       this.postsList = this.interestGroupService.getMyGroupPosts(g);
+      this.eventsList = this.interestGroupService.getMyGroupEvents(g);
     });
+
+
   }
 
   logout() {

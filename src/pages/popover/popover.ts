@@ -7,27 +7,30 @@ import {MobileHomeDisplayService} from "../../providers/mobileHomeDisplayControl
   templateUrl: 'popover.html'
 })
 export class PopoverPage {
-  constructor(public loginService: LoginServiceProvider, public viewController: ViewController, public mobileHomeService: MobileHomeDisplayService) {
+  constructor(public viewCtrl: ViewController, public loginService: LoginServiceProvider, public viewController: ViewController, public mobileHomeService: MobileHomeDisplayService) {
   }
 
   logout() {
     this.loginService.logout();
-    this.viewController.dismiss();
-  }
-
-  goToSettings() {
-
+    this.close();
   }
 
   displayPosts(){
     this.mobileHomeService.displayPosts();
+    this.close()
   }
 
   displayEvents(){
     this.mobileHomeService.displayEvents();
+    this.close()
   }
 
   displaySearch(){
     this.mobileHomeService.displaySearch();
+    this.close()
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 }

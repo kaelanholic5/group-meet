@@ -7,11 +7,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutPage } from '../pages/about/about';
 import { InterestPage } from '../pages/Interest/Interest';
 import { SearchPage } from '../pages/search/search';
-import { Post } from '../pages/Posts/Post';
+import { PostPage } from '../pages/Posts/Post';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { EventsPage } from '../pages/events/events';
 import { PopoverPage } from '../pages/popover/popover';
+import { PopoverInterestPage } from '../pages/popover/popoverInterest';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,8 +21,10 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuthProvider } from 'angularfire2/auth';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import {MobileHomeDisplayService} from "../providers/mobileHomeDisplayControlService";
-import { AgmCoreModule } from '@agm/core';
+import {MobileGroupDisplayService} from "../providers/mobileGroupDisplayControlService";
 
+import { AgmCoreModule } from '@agm/core';
+import {AutosizeInput} from '../directives/autosize/autosizeinput';
 const config = {
   apiKey: "AIzaSyDWjx0pNw1BBJr1_qleUKO82KfnW18iBV8",
   authDomain: "eventconnector-adfe5.firebaseapp.com",
@@ -47,7 +50,9 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     InterestPage,
     SearchPage,
     PopoverPage,
-    Post
+    PopoverInterestPage,
+    PostPage,
+    AutosizeInput
   ],
   imports: [
     BrowserModule,
@@ -70,7 +75,9 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     EventsPage,
     SearchPage,
     InterestPage,
-    PopoverPage
+    PopoverPage,
+    PopoverInterestPage,
+    PostPage
   ],
   providers: [
     StatusBar,
@@ -79,7 +86,8 @@ import {InterestGroupServiceProvider} from "../providers/interestGroupService";
     LoginServiceProvider,
     AngularFireAuthProvider,
     InterestGroupServiceProvider,
-    MobileHomeDisplayService
+    MobileHomeDisplayService,
+    MobileGroupDisplayService
   ]
 })
 
