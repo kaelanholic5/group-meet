@@ -20,7 +20,7 @@ export class SearchPage {
 
   interestGroups: any[];
   database: AngularFireDatabase;
-
+  errorMessage: string;
   constructor(public navCtrl: NavController,
       public af: AngularFireDatabase,
       public interestGroupService: InterestGroupServiceProvider,
@@ -39,7 +39,14 @@ export class SearchPage {
     this.interestGroupService.createUserGroup(group);
   }
   createNewGroup(group: any) {
+    if (group != undefined && group != ''){
     this.interestGroupService.createNewGroup(group);
+    this.errorMessage = '';
+  }
+    else
+    {
+      this.errorMessage = 'Please enter a group name';
+    }
   }
 
   deleteGroup(group: any){

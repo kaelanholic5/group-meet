@@ -1,23 +1,27 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Search</ion-title>
+    <ion-title text-center>Search</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
-  <ion-list>
-    <ion-item *ngFor="let g of interestGroups | search : searchTerm">
-      <h1 style="float: left" (click)="goToInterestPage(g)">{{g.payload.val().groupName}}</h1>
-      <div style="float: right">
-        <button ion-button  (click)="deleteGroup(g)">Delete</button>
-        <button *ngIf="loginService.user != null" ion-button  (click)="createUserGroup(g)">Subscribe</button>
-      </div>
-    </ion-item>
-  </ion-list>
-  <button ion-button (click)="createNewGroup(newGroupName); newGroupName = '';">
+<ion-content class="body">
+  <ion-label text-center>{{errorMessage}}</ion-label>
+  <button ion-button text-center clear style="width: 100%" (click)="createNewGroup(newGroupName); newGroupName = '';">
     Create new group
   </button>
-  <ion-input placeholder="Enter group name" [(ngModel)]="newGroupName"></ion-input>
-
+  <ion-textarea text-center maxlength="48" placeholder="Enter group name" [(ngModel)]="newGroupName" autosizeInput></ion-textarea>
+    <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
+      <ion-list>
+        <ion-item class="interest-name-item" *ngFor="let g of interestGroups | search : searchTerm">
+          <ion-row>
+            <ion-col col-9 text-wrap>
+              <h1 (click)="goToInterestPage(g)" style="overflow:visible">{{g.payload.val().groupName}}</h1>
+            </ion-col>
+            <ion-col col-3>
+              <button ion-button style="float:right; width:70px;" (click)="deleteGroup(g)">Delete</button>
+              <button style="float:right; width:70px;" *ngIf="loginService.user != null" ion-button (click)="createUserGroup(g)">Follow</button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
 </ion-content>

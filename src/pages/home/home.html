@@ -24,7 +24,7 @@
       <ion-row style="padding: 10px; border-bottom: 0.5px solid #B1C5C4">
         <ion-col col-2 class="avatar-col">
           <ion-avatar>
-            <img class="avatar-image" [src]="loginService.user.photoURL" />
+            <img class="avatar-image" [src]="loginService.user.providerData[0].photoURL" />
           </ion-avatar>
         </ion-col>
         <ion-col col-8 class="name-col">
@@ -75,7 +75,7 @@
           <ion-list>
             <ion-item text-wrap class="interest-post-item" *ngFor="let event of eventsList">
               <div class="interest-post-name">{{event.name}}</div>
-              <div class="interest-post-text">{{event.date | date}} {{event.time}}</div>
+              <div class="interest-post-text">{{event.time}} {{event.date | date}}</div>
             <div class="interest-post-text">{{event.location}}</div>
             </ion-item>
           </ion-list>

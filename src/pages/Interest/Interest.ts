@@ -47,10 +47,6 @@ export class InterestPage {
         this.navCtrl.push(PostPage, { 'groupId': this.groupId });
     }
 
-    goToInterest(inter: any) {
-        this.navCtrl.push(InterestPage, { 'groupId': inter.key });
-    }
-
     createEvent() {
         this.navCtrl.push(EventsPage, { 'groupId': this.groupId });
     }

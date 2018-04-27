@@ -11,15 +11,15 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="body">
     <ion-row>
         <ion-col *ngIf="(screenWidth <= 768 && mobileGroupService.showPosts) || screenWidth > 768" [attr.col-6]="screenWidth > 768 ? '' : null">
             <button ion-button style="display:inline-block; text-align:center;" (click)="createPost()">Create Post</button>
             <h2>Posts</h2>
             <ion-list>
-            <ion-item text-wrap class="post-item-list" *ngFor="let post of posts">
-                <div>{{post.payload.val().name}}</div>
-                <div>{{post.payload.val().text}}</div>
+            <ion-item text-wrap class="interest-post-item" *ngFor="let post of posts">
+                <div class="interest-post-name">{{post.payload.val().name}}</div>
+                <div class="interest-post-text">{{post.payload.val().text}}</div>
             </ion-item>
         </ion-list>
         </ion-col>
@@ -27,9 +27,9 @@
             <button ion-button  style="display:inline-block; text-align:center;" (click)="createEvent()">Create Event</button>
             <h2>Events</h2>
             <ion-list>
-            <ion-item text-wrap class="post-item-list" *ngFor="let event of events">
-                <div>{{event.payload.val().name}}</div>
-                <div>{{event.payload.val().date | date}} {{event.payload.val().time}}</div>
+            <ion-item text-wrap class="interest-post-item" *ngFor="let event of events">
+                <div class="interest-post-name">{{event.payload.val().name}}</div>
+                <div class="interest-post-text">{{event.payload.val().date | date}} {{event.payload.val().time}}</div>
                 <div style="float: left">{{event.payload.val().location}}</div>
             </ion-item>
         </ion-list>

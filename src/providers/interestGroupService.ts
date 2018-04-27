@@ -35,7 +35,6 @@ export class InterestGroupServiceProvider {
   createNewPost(newPostName: string, groupId: string, newPostText) {
       let fireList = this.database.list("groups/" + groupId + '/posts/');
       return fireList.push({ name: newPostName, createDTM: Date.now(), text: newPostText });
-
   }
 
   getPosts(groupId: string): Observable<any> {
@@ -89,7 +88,6 @@ export class InterestGroupServiceProvider {
     console.log("create " + newGroupName);
     let fireList = this.database.list('groups/');
     let alreadyExists = false;
-    if (newGroupName != undefined && newGroupName != '') {
       fireList.snapshotChanges().subscribe(s => {
         s.forEach(e => {
           console.log(e.payload.val().groupName);
@@ -102,7 +100,6 @@ export class InterestGroupServiceProvider {
           newMod.set({ groupName: newGroupName, events: '' });
         }
       })
-    }
   }
 
   deleteGroup(groupKey: any) {

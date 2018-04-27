@@ -1,15 +1,17 @@
-import {Component, ElementRef, ViewChild, NgZone} from '@angular/core';
+import { Component, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase,
-  AngularFireList, AngularFireObject } from 'angularfire2/database';
+import {
+  AngularFireDatabaseModule, AngularFireDatabase,
+  AngularFireList, AngularFireObject
+} from 'angularfire2/database';
 import * as firebase from 'firebase/app';
-import {} from '@types/googlemaps';
+import { } from '@types/googlemaps';
 
 import { MapsAPILoader, AgmMap, AgmMarker } from '@agm/core';
-import {InterestGroupServiceProvider} from "../../providers/interestGroupService";
+import { InterestGroupServiceProvider } from "../../providers/interestGroupService";
 
 @Component({
   selector: 'page-events',
@@ -45,23 +47,23 @@ export class EventsPage {
   eventLocation: string;
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
-              private af: AngularFireDatabase, private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone, public interestGroupService: InterestGroupServiceProvider) {
-        this.database = af;
-        this.pins = [];
+    private af: AngularFireDatabase, private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone, public interestGroupService: InterestGroupServiceProvider) {
+    this.database = af;
+    this.pins = [];
 
-      this.groupId = navParams.get('groupId');
+    this.groupId = navParams.get('groupId');
 
-      this.todaysDate = new Date(Date.now());
-      this.endDate = new Date(Date.now());
-      this.endDate.setFullYear(this.endDate.getFullYear() + 5);
+    this.todaysDate = new Date(Date.now());
+    this.endDate = new Date(Date.now());
+    this.endDate.setFullYear(this.endDate.getFullYear() + 5);
 
-      if (this.groupId !=  null) {
-        this.creatingEventForGroup = true;
-        interestGroupService.getGroup(this.groupId).subscribe(g => {
-          this.interestGroupName = g.payload.val().groupName;
-          });
-      }
+    if (this.groupId != null) {
+      this.creatingEventForGroup = true;
+      interestGroupService.getGroup(this.groupId).subscribe(g => {
+        this.interestGroupName = g.payload.val().groupName;
+      });
+    }
   }
 
   createEvent() {
@@ -84,12 +86,12 @@ export class EventsPage {
 
     this.interestGroupService.createNewEvent(this.groupId, this.newEventName, this.eventLocation,
       this.eventDate, this.eventTime).then(res => {
-      this.errorMessage = "Event '" + this.newEventName + "' has been successfully created!";
-      this.newEventName = null;
-      this.eventLocation = null;
-      this.eventTime = null;
-      this.eventDate = null;
-    });
+        this.errorMessage = "Event '" + this.newEventName + "' has been successfully created!";
+        this.newEventName = null;
+        this.eventLocation = null;
+        this.eventTime = null;
+        this.eventDate = null;
+      });
   }
 
   ngOnInit() {
@@ -122,8 +124,9 @@ export class EventsPage {
   public findLocation(location: string) {
 
 
-    let googleMap = new google.maps.Map(document.getElementById('map'),
-      { zoom: 15
+    let googleMap = new google.maps.Map(document.getElementById('agm-map'),
+      {
+        zoom: 15
       });
     let service = new google.maps.places.PlacesService(googleMap);
 
@@ -137,7 +140,7 @@ export class EventsPage {
       } else {
         results.forEach(result => {
           console.log(result);
-        //  this.dropPin(result, googleMap);
+          //  this.dropPin(result, googleMap);
         })
       }
     });

@@ -19,7 +19,7 @@ export class LoginServiceProvider {
 
   login() {
      return Observable.fromPromise(this.ang.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(res => { this.user = res.user; console.log(res.user.uid); this.loggedIn = true; })
+      .then(res => { this.user = res.user;console.log(res.user); console.log(res.user.uid); this.loggedIn = true; })
       .catch(res => { this.loggedIn = false; }));
   }
 

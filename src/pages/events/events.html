@@ -1,11 +1,11 @@
 <ion-header>
-<ion-navbar>
-  <ion-title text-center *ngIf="!creatingEventForGroup">Events</ion-title>
-  <ion-title text-center *ngIf="creatingEventForGroup">Create New Event for {{interestGroupName}}</ion-title>
-</ion-navbar>
+  <ion-navbar>
+    <ion-title text-center *ngIf="!creatingEventForGroup">Events</ion-title>
+    <ion-title text-center *ngIf="creatingEventForGroup">Create New Event for {{interestGroupName}}</ion-title>
+  </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="body">
 
   <div *ngIf="!creatingEventForGroup">
     <button ion-button (click)="findLocation(location); location='';">Search</button>
@@ -21,7 +21,8 @@
         <ion-input placeholder="enter new event name" [(ngModel)]="newEventName"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-datetime displayFormat="MMM DD YYYY h:mm A" [min]="todaysDate.toISOString()" [max]="endDate.toISOString()" placeholder="enter date" [(ngModel)]="eventDate"></ion-datetime>
+        <ion-datetime displayFormat="MMM DD YYYY h:mm A" [min]="todaysDate.toISOString()" [max]="endDate.toISOString()" placeholder="enter date"
+          [(ngModel)]="eventDate"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" placeholder="enter time" [(ngModel)]="eventTime"></ion-datetime>
@@ -36,11 +37,10 @@
   </div>
 
 
-  <input placeholder="search for location" autocapitalize="off" type="text" class="form-control"
-             #search [formControl]="searchControl">
-  <agm-map style="height: 400px; width: 100%" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-    <agm-marker *ngFor="let pin of pins" [latitude]="pin.latitude" [longitude]="pin.longitude"
-                [label]="pin.name" [markerDraggable]="false" (markerClick)="markerClick(pin)">
+  <input placeholder="search for location" autocapitalize="off" type="text" class="form-control" #search [formControl]="searchControl">
+  <agm-map style="height: 400px; width: 100%" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [gestureHandling]="'cooperative'">
+    <agm-marker *ngFor="let pin of pins" [latitude]="pin.latitude" [longitude]="pin.longitude" [label]="pin.name" [markerDraggable]="false"
+      (markerClick)="markerClick(pin)">
       <agm-info-window>{{pin.name}}</agm-info-window>
     </agm-marker>
   </agm-map>
