@@ -31,7 +31,9 @@ export class InterestPage {
         public popoverController: PopoverController, public mobileGroupService: MobileGroupDisplayService) {
         this.groupId = navParams.get('groupId');
         interestGroupService.getGroup(this.groupId).subscribe(g => {
+            if(g.payload.val() != null){
             this.interestName = g.payload.val().groupName;
+            }
             this.interestGroupService.getPosts(this.groupId).subscribe(p => {
                 this.posts = p;
                 this.posts.sort(function (a, b) { return b.payload.val().createDTM - a.payload.val().createDTM });

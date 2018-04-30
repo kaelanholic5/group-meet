@@ -167,3 +167,4 @@ export class InterestGroupServiceProvider {
     fireList.remove();
   }
 }
+

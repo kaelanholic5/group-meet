@@ -41,6 +41,7 @@ export class PostPage {
             this.errorMessage = "Post creation successful!";
             this.newPostText = null;
             this.newPostName = null;
+            this.navCtrl.pop();
         });
 
     }

@@ -6,7 +6,7 @@
         </ion-header>
 
 <ion-content class="body">
-        <ion-label>{{errorMessage}}</ion-label>
+        <ion-label text-center>{{errorMessage}}</ion-label>
         <ion-textarea text-center maxlength="100" placeholder="Enter Post Name" [(ngModel)]="newPostName" autosizeInput></ion-textarea>
         <ion-textarea  text-center placeholder="Enter Post Text" [(ngModel)]="newPostText" autosizeInput></ion-textarea>
         <button ion-button text-center clear style="width: 100%" (click)="addPost();">Create Post</button>

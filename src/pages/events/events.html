@@ -13,8 +13,8 @@
   </div>
 
   <div *ngIf="creatingEventForGroup">
-    <button ion-button align-self-center clear style="width: 100%" (click)="errorMessage = ''; createEvent()">Create Event</button>
-    <ion-label>{{errorMessage}}</ion-label>
+    
+    <ion-label text-center>{{errorMessage}}</ion-label>
 
     <ion-list>
       <ion-item>
@@ -34,6 +34,7 @@
       </ion-item>
     </ion-list>
     {{eventDate}} {{eventTime}}
+    <button ion-button align-self-center clear style="width: 100%" (click)="errorMessage = ''; createEvent()">Create Event</button>
   </div>
 
 

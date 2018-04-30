@@ -14,8 +14,8 @@
       <ion-list>
         <ion-item class="interest-name-item" *ngFor="let g of interestGroups | search : searchTerm">
           <ion-row>
-            <ion-col col-9 text-wrap>
-              <h1 (click)="goToInterestPage(g)" style="overflow:visible">{{g.payload.val().groupName}}</h1>
+            <ion-col (click)="goToInterestPage(g)" col-9 text-wrap>
+              <h1 style="overflow:visible">{{g.payload.val().groupName}}</h1>
             </ion-col>
             <ion-col col-3>
               <button ion-button style="float:right; width:70px;" (click)="deleteGroup(g)">Delete</button>
